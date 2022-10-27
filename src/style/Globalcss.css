@@ -1,0 +1,104 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+.ant-picker-dropdown {
+    z-index: 1056;
+}
+.listSetting:hover {
+  background-color: #D5F5F2;
+  border-radius: 5px;
+}
+.sairButtonList:hover{
+  background-color: #FEB4A8;
+    border-radius: 5px;
+}
+.itemLog:hover {
+  background-color: #D5F5F2;
+}
+.boxprodutos {
+    transform: scale(0.9);
+    transition: all ease 0.3s;
+    box-shadow: 0.3px 0.3px 2px rgb(158, 158, 158);
+    cursor: pointer;
+        
+}
+.boxprodutos:hover {
+    transform: scale(0.92);
+    transition: all ease 0.2s;
+    box-shadow: 0.3px 0.3px 5px rgb(158, 158, 158);
+}
+
+#components-dropdown-demo-arrow .ant-btn {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.ant-row-rtl #components-dropdown-demo-arrow .ant-btn {
+    margin-right: 0;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+
+.iconfooter {
+    transform: scale(0.98);
+    transition: all ease 0.1s;
+    
+}
+
+.iconfooter:hover {
+    transform: scale(1.1);
+    transition: all ease 0.1s;
+}
+
+.effectcategoria{
+    transform: scale(0.95);
+    transition: all ease 0.2s;
+    box-shadow: 0.3px 0.3px 5px rgb(158, 158, 158);
+
+}
+
+.effectcategoria:hover {
+    transform: scale(1.0);
+    transition: all ease 0.1s;
+}
+
+.toprated {
+    transform: scale(1.0);
+    transition: all ease 0.1s;
+
+}
+.toprated:hover {
+    transform: scale(1.05);
+    transition: all ease 0.1s;
+    border-width: 0px;
+
+}
+
+.site-layout .site-layout-background {
+    background: "red";
+  }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f7f7f7;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(230, 230, 230);
+  border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(211, 211, 211);
+}
+::-webkit-scrollbar-button {
+  width: 50px;
+  height: 50px;
+}
