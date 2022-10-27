@@ -38,7 +38,7 @@ export const Estatistica = () => {
 	useEffect(() => {
 		getErros(currentPosition, limite, dataInical?.format("DD-MM-YYYY") ?? "", dataFinal?.format("DD-MM-YYYY") ?? "").then((result) => {
 			setErroLog(result?.data?.erros)
-			console.log(result?.data?.total)
+			setErrosNaSemana(result?.data?.total)
 			setTotalItens(result?.data?.total)
 		}).then((error) => {
 
@@ -46,7 +46,8 @@ export const Estatistica = () => {
 		getDias(dataInical?.format("DD-MM-YYYY") ?? "", dataFinal?.format("DD-MM-YYYY") ?? "").then((result) => {
 			setDiasSemana(result?.data)
 			// diasSemana.reverse();
-			setErrosNaSemana(result?.data?.total)
+
+			console.warn(result)
 		}).then((error) => {
 
 		})
@@ -110,7 +111,7 @@ export const Estatistica = () => {
 				<VStack borderRadius={5} bg={"white"} w={"full"} h={300} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
 					<VStack p={4} alignItems={"start"} w={"full"}>
 						<Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>
-							Estatística sem falhas
+							Estatística de erros
 						</Text>
 						<Text fontSize={"sm"} color={"gray.400"} >
 							Registro de logs esta semana
