@@ -1,17 +1,50 @@
 import {
-	Button, FormControl, FormLabel, HStack, Input, Modal, ModalBody,
-	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Table, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, Tr, useDisclosure, VStack
+	Button, FormControl, FormLabel, HStack, Image, Input, Modal, ModalBody,
+	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, Table, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, toast, Tr, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import DoubleLeft from "../../images/double-left-arrow.png";
+import DoubleRigth from "../../images/double-rigth-arrow.png";
 
 import { useNavigate } from "react-router-dom";
+import { criarVersao, getFilesName, getVersoes } from "../../api/api";
+import { Versao } from "./type";
 export const Versoes = () => {
 
-	const { isOpen, onOpen, onClose } = useDisclosure()
+	const navigate = useNavigate();
 
+	const [loading, setLoading] = useState(false)
+
+	const { isOpen, onOpen, onClose } = useDisclosure()
+	const [fileNames, setFileNames] = useState<string[]>();
+	const [titulo, setTitulo] = useState('');
+	const [versao, setVersao] = useState('');
+	const [descricao, setDescricao] = useState('');
+	const [nomeArquivo, setNomeArquivo] = useState('0');
+	const [codigo, setCodigo] = useState('');
+	const [confirmacao, setConfirmacao] = useState('');
+	const [todosCamposPreenchidos, setTodosCamposPreenchidos] = useState(false)
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
-	const navigate = useNavigate();
+	const [versoes, setVersoes] = useState<Versao[]>();
+
+	const [limite, setLimite] = useState(5);
+	const [currentPosition, setPosition] = useState<number>(1);
+	const [totalItens, setTotalItens] = useState(0);
+
+	const toast = useToast();
+
+	useEffect(() => {
+		getFilesName().then(result => {
+			setFileNames(result?.data)
+		})
+		getVersoes(currentPosition, limite).then((result) => {
+			setVersoes(result?.data?.versoes)
+			setTotalItens(result?.data?.total)
+		})
+	}, [currentPosition, limite])
 
 	const data = [
 		{
@@ -58,13 +91,69 @@ export const Versoes = () => {
 		},
 	];
 
+	const next = (numero: number) => {
+		setPosition(currentPosition + (numero))
+	}
+
+	function validarCampos() {
+		setLoading(true)
+		if (!(!titulo || !versao || !nomeArquivo || !descricao || !confirmacao || !codigo)) {
+			if (confirmacao === "eu confirmo que desejo lançar essa versão") {
+				criarVersao({ codigo: codigo, descricao: descricao, nomeArquivo: nomeArquivo, titulo: titulo, versao: versao, data_lancamento: "null", id: "null" }).then((result) => {
+					setLoading(false)
+					limpar()
+				}).catch((error) => {
+					setLoading(false)
+					toast({
+						title: "Ocorreu um erro",
+						status: "error",
+						duration: 2000,
+						isClosable: true,
+					})
+				});
+			} else {
+				setLoading(false)
+				toast({
+					title: "Por favor, confirme que deseja executar essa ação.",
+					status: "warning",
+					duration: 2000,
+					isClosable: true,
+				})
+			}
+
+		} else {
+			setLoading(false)
+			toast({
+				title: "Por favor, preencha todos os campos.",
+				status: "warning",
+				duration: 2000,
+				isClosable: true,
+			})
+
+		}
+	}
+	function limpar() {
+		setTitulo('')
+		setVersao('')
+		setCodigo('')
+		setNomeArquivo('')
+		setDescricao('')
+		setConfirmacao('')
+		onClose();
+		toast({
+			title: "Versão criada com sucesso!",
+			status: "success",
+			duration: 2000,
+			isClosable: true,
+		})
+	}
 	return (
 		<>
 			<VStack w={"80%"}>
 				<HStack spacing={5} w="full" >
 
 				</HStack>
-				<VStack bgColor={"white"} borderRadius={5} h={400} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack bgColor={"white"} borderRadius={5} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Produção</Text>
 
@@ -87,30 +176,32 @@ export const Versoes = () => {
 								</Tr>
 							</Thead>
 							<Tbody>
-								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.3</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>3.44</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>13 de setembro</Text></Td>
-									<Td><Button colorScheme={"blue"} onClick={() => { navigate("e607f8e106288e9e22efe3538c19b94a") }} variant={"link"}>Detalhe</Button></Td>
-								</Tr>
-								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.3</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>3.44</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>13 de setembro</Text></Td>
-									<Td><Button colorScheme={"blue"} onClick={() => { navigate("e607f8e106288e9e22efe3538c19b94a") }} variant={"link"}>Detalhe</Button></Td>
-								</Tr>
-								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.3</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>3.44</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>13 de setembro</Text></Td>
-									<Td><Button colorScheme={"blue"} onClick={() => { navigate("e607f8e106288e9e22efe3538c19b94a") }} variant={"link"}>Detalhe</Button></Td>
-								</Tr>
+								{versoes?.map((versao) => {
+									return (
+										<Tr className="itemLog" cursor={"pointer"}>
+											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{versao?.versao}</Text></Td>
+											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{versao?.codigo}</Text></Td>
+											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{moment(versao?.data_lancamento).format("l")}</Text></Td>
+											<Td><Button colorScheme={"blue"} onClick={() => { navigate(versao?.id) }} variant={"link"}>Detalhe</Button></Td>
+										</Tr>
+									);
+								})}
+
+
 							</Tbody>
 							<Tfoot>
 
 							</Tfoot>
 						</Table>
 					</TableContainer>
+					<VStack py={5} w={"full"}>
+						<HStack>
+							{currentPosition >= 1}
+							<Button disabled={currentPosition <= 1} onClick={() => { next(-1) }}><Image boxSize={"14px"} src={DoubleLeft} /></Button>
+							<Text fontWeight={500}>{currentPosition} de {Math.ceil(totalItens / limite)}</Text>
+							<Button disabled={currentPosition >= Math.ceil(totalItens / limite)} onClick={() => { next(1) }}><Image boxSize={"14px"} src={DoubleRigth} /></Button>
+						</HStack>
+					</VStack>
 				</VStack>
 			</VStack>
 			<Modal
@@ -128,26 +219,34 @@ export const Versoes = () => {
 						<VStack overflow={"auto"} maxH={300}>
 							<FormControl>
 								<FormLabel>Título</FormLabel>
-								<Input ref={initialRef} placeholder='Versão x-yz' />
+								<Input value={titulo} onChange={(e) => { setTitulo(e.target.value); }} ref={initialRef} placeholder='Algum título aqui' />
 							</FormControl>
 
 							<FormControl mt={4}>
 								<FormLabel>Versão</FormLabel>
-								<Input placeholder='Last name' />
+								<Input value={versao} onChange={(e) => { setVersao(e.target.value); }} placeholder='ex: x' />
 							</FormControl>
 
 							<FormControl mt={4}>
-								<FormLabel>Descrição</FormLabel>
-								<Input placeholder='Last name' />
+								<FormLabel>Código</FormLabel>
+								<Input value={codigo} onChange={(e) => { setCodigo(e.target.value); }} placeholder='ex: 2' />
 							</FormControl>
+
 
 							<FormControl mt={4}>
 								<FormLabel>Nome do arquivo</FormLabel>
-								<Input placeholder='Last name' />
+								<Select placeholder="Selecione um arquivo" defaultValue={nomeArquivo} onChange={(e) => { setNomeArquivo(e.target.value); }} fontSize={"large"} >
+									{fileNames?.map((fileName, index) => {
+										return (
+											<option value={index}>{fileName}</option>
+										);
+									})}
+								</Select>
 							</FormControl>
 							<FormControl>
 								<FormLabel>Descrição</FormLabel>
 								<Textarea
+									value={descricao} onChange={(e) => { setDescricao(e.target.value); }}
 									placeholder='Descreva a versão'
 									size='sm'
 								/>
@@ -155,7 +254,7 @@ export const Versoes = () => {
 
 							<FormControl mt={4}>
 								<FormLabel>Por favor, digite "eu confirmo que desejo lançar essa versão"</FormLabel>
-								<Input placeholder='' />
+								<Input value={confirmacao} onChange={(e) => { setConfirmacao(e.target.value); }} />
 							</FormControl>
 
 
@@ -163,7 +262,7 @@ export const Versoes = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button colorScheme='blue' mr={3}>
+						<Button isLoading={loading} colorScheme='blue' mr={3} onClick={validarCampos}>
 							Lançar
 						</Button>
 						<Button onClick={onClose}>Cancelar</Button>

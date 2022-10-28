@@ -139,7 +139,7 @@ export const ControleProcessoContratoDetalhes = () => {
 			>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Criar versão de produção</ModalHeader>
+					<ModalHeader>Criar vpersão de produção</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6} >
 						<VStack overflow={"auto"} maxH={300}>

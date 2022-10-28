@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import { Versao } from '../components/versoes/type'
 import { UsuarioData } from '../types/UsuarioData'
 import { ConfiguracaoParametroTDO, EventoPayloadTDO } from './EventoPayloadTDO'
 
@@ -153,6 +154,35 @@ export const getDias = async (start: string, end: string) => {
 export const getErroDetail = async (id: number) => {
   try {
     const res = await api.get(`logs/orderBy?id=${id}`)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+export const getFilesName = async () => {
+  try {
+    const res = await api.get(`controle-versao/versionnames`)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+
+export const criarVersao = async (versao: Versao) => {
+  try {
+    const res = await api.post(`controle-versao`, versao)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+
+export const getVersoes = async (page: number, limit: number) => {
+  try {
+    const res = await api.get(`controle-versao?page=${page}&limit=${limit}`)
     return res
   } catch (err) {
     if ((err as any).response) return { data: null, error: err }

@@ -87,8 +87,8 @@ export const Estatistica = () => {
 	return (
 		<VStack w={"80%"}>
 			<HStack w={"full"}  >
-				<Select bg={"white"} onChange={(e) => { selecionarPeriodo(e.target.value) }}>
-					<option value='7'>Últimos 7 dias</option>
+				<Select fontWeight={"semibold"} color={"gray.600"} bg={"white"} onChange={(e) => { selecionarPeriodo(e.target.value) }}>
+					<option value='7'><Text fontSize={"md"} fontWeight={"semibold"}>Últimos 7 dias</Text></option>
 					<option value='30'>Últimos 30 dias</option>
 					<option value='180'>Últimos 180 dias</option>
 					<option value='365'>Últimos 365 dias</option>
@@ -101,9 +101,8 @@ export const Estatistica = () => {
 					</ConfigProvider>
 				</VStack>
 				<VStack w={"full"}>
-
 					<ConfigProvider locale={ptBR}>
-						<DatePicker format={"DD-MM-YYYY"} defaultValue={moment(new Date(), 'DD-MM-YYYY')} onChange={(e) => { setDataFinal(e); }} placeholder="Data final" size="large" style={{ width: '100%', borderRadius: 4 }} />
+						<DatePicker format={"DD-MM-YYYY"} defaultValue={moment(new Date(), 'DD-MM-YYYY')} onChange={(e) => { setDataFinal(e); }} placeholder="Data final" size="large" style={{ width: '100%', borderRadius: 4, fontWeight: 600, color: "gray" }} />
 					</ConfigProvider>
 				</VStack>
 			</HStack>
@@ -114,7 +113,7 @@ export const Estatistica = () => {
 							Estatística de erros
 						</Text>
 						<Text fontSize={"sm"} color={"gray.400"} >
-							Registro de logs esta semana
+							Registro entre {dataInical?.format("ll")} á {dataFinal?.format("ll")}
 						</Text>
 						<Text fontWeight={"semibold"} fontSize={"lg"} color={"blue.500"} >
 							{errosNaSemana}
