@@ -1,5 +1,5 @@
 import {
-	Button, FormControl, FormLabel, HStack, Image, Input, Modal, ModalBody,
+	Button, Center, Editable, EditableInput, EditablePreview, FormControl, FormLabel, HStack, Image, Input, Modal, ModalBody,
 	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, Table, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, toast, Tr, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -176,13 +176,14 @@ export const Versoes = () => {
 								</Tr>
 							</Thead>
 							<Tbody>
-								{versoes?.map((versao) => {
+								{versoes?.map((version) => {
 									return (
 										<Tr className="itemLog" cursor={"pointer"}>
-											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{versao?.versao}</Text></Td>
-											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{versao?.codigo}</Text></Td>
-											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{moment(versao?.data_lancamento).format("l")}</Text></Td>
-											<Td><Button colorScheme={"blue"} onClick={() => { navigate(versao?.id) }} variant={"link"}>Detalhe</Button></Td>
+											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{version?.versao}</Text></Td>
+
+											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{version?.codigo}</Text></Td>
+											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{moment(version?.data_lancamento).format("l")}</Text></Td>
+											<Td><Button colorScheme={"blue"} onClick={() => { navigate((version?.id).toString()) }} variant={"link"}>Detalhe</Button></Td>
 										</Tr>
 									);
 								})}

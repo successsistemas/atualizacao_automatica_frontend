@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Spacer, Button, useDisclosure, FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
+import { HStack, VStack, Text, Spacer, Button, useDisclosure, FormControl, FormLabel, Input, Textarea, Center, EditablePreview, EditableInput, Editable } from "@chakra-ui/react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import {
 	Modal,
@@ -20,21 +20,47 @@ import {
 	TableCaption,
 	TableContainer,
 } from '@chakra-ui/react'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ResumoVersao } from "./ResumoVersao";
 import { AiFillDelete } from "react-icons/ai";
 import { useParams } from "react-router-dom";
+import { Versao, VersaoJSON } from "./type";
+import { getSingleVersion } from "../../api/api";
+import { AxiosError, AxiosResponse } from "axios";
+import { ConsoleErro } from "../errolog/ConsoleErro";
 
 export const DetalheVersao = () => {
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
 
+	const [fileNames, setFileNames] = useState<string[]>();
+	const [titulo, setTitulo] = useState('');
+	const [versao, setVersao] = useState('');
+	const [descricao, setDescricao] = useState('');
+	const [nomeArquivo, setNomeArquivo] = useState('0');
+	const [codigo, setCodigo] = useState('');
+	const [confirmacao, setConfirmacao] = useState('');
 
+	const [version, setVersion] = useState<VersaoJSON>();
 
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
 	const { id } = useParams();
-	console.log("LLLLLLLLLLLLLLLLLLLL", id)
+
+	type Response = {
+		data: any,
+		error: any
+	}
+	useEffect(() => {
+		getSingleVersion(12).then((result) => {
+
+			if (result?.data) {
+				setVersion(result?.data[0])
+			}
+		}).catch((e) => {
+			console.warn("hello")
+		});
+	}, [])
 
 	const data = [
 		{
@@ -110,10 +136,38 @@ export const DetalheVersao = () => {
 							</Thead>
 							<Tbody>
 								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.3</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>4f</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>nome_doarquivo.tsz.zip</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>5</Text></Td>
+									<Td>
+										<Center >
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.versao} value={version?.versao} onChange={(e) => { setVersao(e) }} onBlur={() => { console.log("saiu do foco") }}>
+												<EditablePreview />
+												<EditableInput />
+											</Editable>
+										</Center>
+									</Td>
+									<Td>
+										<Center >
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.codigo} value={version?.codigo} onChange={(e) => { setCodigo(e) }} onBlur={() => { console.log("saiu do foco") }}>
+												<EditablePreview />
+												<EditableInput />
+											</Editable>
+										</Center>
+									</Td>
+									<Td>
+										<Center >
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.nome_arquivo} value={version?.nome_arquivo} onChange={(e) => { setVersao(e) }} onBlur={() => { console.log("saiu do foco") }}>
+												<EditablePreview />
+												<EditableInput />
+											</Editable>
+										</Center>
+									</Td>
+									<Td>
+										<Center >
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.codigo} value={version?.codigo} onChange={(e) => { setCodigo(e) }} onBlur={() => { console.log("saiu do foco") }}>
+												<EditablePreview />
+												<EditableInput />
+											</Editable>
+										</Center>
+									</Td>
 								</Tr>
 							</Tbody>
 							<Tfoot>
@@ -121,6 +175,9 @@ export const DetalheVersao = () => {
 							</Tfoot>
 						</Table>
 					</TableContainer>
+					<VStack px={10} w={"full"}>
+						<ConsoleErro stringColor="black" erro="Algum erro aqui" cor={"#F9E79F"} />
+					</VStack>
 				</VStack>
 			</VStack>
 			<Modal

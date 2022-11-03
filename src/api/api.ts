@@ -189,3 +189,32 @@ export const getVersoes = async (page: number, limit: number) => {
     throw err
   }
 }
+
+export const getSingleVersion = async (id: number) => {
+  try {
+    const res = await api.get(`controle-versao/sigle-version?id=${id}`)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+
+export const deleteSingleVersion = async (id: number) => {
+  try {
+    const res = await api.delete(`controle-versao/sigle-version?id=${id}`)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+export const updateSingleVersion = async (id: number, versao: Versao) => {
+  try {
+    const res = await api.put(`controle-versao/sigle-version?id=${id}`, versao)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}

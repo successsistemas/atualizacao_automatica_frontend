@@ -18,7 +18,7 @@ export const DetalheErroLog = () => {
 	const finalRef = React.useRef(null)
 
 	const { id } = useParams();
-	console.log("LLLLLLLLLLLLLLLLLLLL", id)
+
 
 	useEffect(() => {
 		getErroDetail(Number(id)).then((result: any) => {
@@ -27,50 +27,7 @@ export const DetalheErroLog = () => {
 		})
 	}, [id])
 
-	const data = [
-		{
-			name: 'Page A',
-			uv: 4000,
-			pv: 10,
-			amt: 2400,
-		},
-		{
-			name: 'Page B',
-			uv: 3000,
-			pv: 30,
-			amt: 2210,
-		},
-		{
-			name: 'Page C',
-			uv: 2000,
-			pv: 10,
-			amt: 2290,
-		},
-		{
-			name: 'Page D',
-			uv: 2780,
-			pv: 50,
-			amt: 2000,
-		},
-		{
-			name: 'Page E',
-			uv: 1890,
-			pv: 97,
-			amt: 2181,
-		},
-		{
-			name: 'Page F',
-			uv: 2390,
-			pv: 87,
-			amt: 2500,
-		},
-		{
-			name: 'Page G',
-			uv: 3490,
-			pv: 99,
-			amt: 2100,
-		},
-	];
+
 
 	return (
 		<>
@@ -86,7 +43,7 @@ export const DetalheErroLog = () => {
 							<Button colorScheme={"gray"}><AiOutlineDownload fill="gray" /></Button>
 						</HStack>
 
-						<ConsoleErro erro={erroLog?.erro ?? "Nenum log registrado"} />
+						<ConsoleErro stringColor="black" cor={"#fff0f0"} erro={erroLog?.erro ?? "Nenum log registrado"} />
 					</VStack>
 				</VStack>
 			</VStack>
