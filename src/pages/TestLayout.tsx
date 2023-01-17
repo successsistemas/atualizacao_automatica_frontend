@@ -1,6 +1,6 @@
 
 import { Box, Button, Center, chakra, Flex, HStack, Image, List, ListIcon, ListItem, Spacer, Text, useDisclosure, useToast, VStack } from "@chakra-ui/react";
-import { Layout } from "antd";
+import { Layout, Menu } from "antd";
 import 'antd/dist/antd.css';
 import React, { useState } from "react";
 import { RiDashboardFill } from "react-icons/ri";
@@ -38,6 +38,7 @@ import { MdCheckCircle, MdSettings } from "react-icons/md";
 import { AiFillSetting } from "react-icons/ai"
 import { AiOutlineFileAdd } from "react-icons/ai"
 import { HiOutlineLogout } from "react-icons/hi"
+import { FolderOpenOutlined } from "@ant-design/icons";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -161,8 +162,28 @@ export const TesteLayout = () => {
 	return (
 		<UsuarioProvider>
 			<LayoutChakara h={"100vh"} >
+			<Sider theme="light" trigger={null} collapsible collapsed={collapsed} >
+				
+					<Menu theme="light" mode="inline" defaultSelectedKeys={['2']}>
+						{/* <Menu.Item onClick={() => { navigate('home/' + url) }} key="1" icon={<BiHomeAlt />}>
+							Home
+						</Menu.Item> */}
+						<Menu.Item onClick={() => { navigate('cotacao/' + 'urlaqui') }} key="2" icon={<FolderOpenOutlined />}>
+							Cotações abertas
+						</Menu.Item>
+						{/*	<Menu.Item onClick={() => { navigate('cotacoes-fechadas') }} key="3" icon={<MailOutlined />}>
+						Cotações fechadas
+					</Menu.Item> */}
+						{/*<Menu.Item key="4" onClick={() => { navigate('relatorios/' + url) }} icon={<FilePdfOutlined />}>
+						Relatórios
+				</Menu.Item>*/}
 
-				<Layout className="site-layout">
+						{/* <Menu.Item key="5" onClick={() => { navigate('configuracao/' + url) }} icon={<SettingOutlined />}>
+						Configurar usuários
+					</Menu.Item> */}
+					</Menu>
+				</Sider>
+				<Layout className="site-layout">	
 					<Header className="site-layout-background" style={{ padding: 0 }}>
 
 						<Flex bg='#2F618F' zIndex={2000}>

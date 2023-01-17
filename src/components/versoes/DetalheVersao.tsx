@@ -62,6 +62,37 @@ export const DetalheVersao = () => {
 		});
 	}, [])
 
+
+	const columns = [
+  {
+    title: 'Versão',
+    dataIndex: 'versao',
+    key: 'versao',
+  },
+  {
+    title: 'Código',
+    dataIndex: 'codigo',
+    key: 'codigo',
+  },
+  {
+    title: 'Lançamento',
+    dataIndex: 'data_lancamento',
+    key: 'data_lancamento',
+  },
+  {
+    title: 'Arquivo',
+    dataIndex: 'nome_arquivo',
+    key: 'nome_arquivo',
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+  }
+];
+
+
+
 	const data = [
 		{
 			name: 'Page A',
@@ -109,14 +140,14 @@ export const DetalheVersao = () => {
 
 	return (
 		<>
-			<VStack w={"80%"}>
+			<VStack w={"full"}>
 				<HStack spacing={5} w="full" >
 
 				</HStack>
-				<VStack bgColor={"white"} borderRadius={5} h={400} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack bgColor={"white"} borderRadius={5} h={400} w={"full"}>
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<HStack w="full">
-							<Text fontWeight={"semibold"} fontSize={"lg"}>Detalhe de versão</Text>
+							<Text fontWeight={"semibold"} fontSize={"lg"}>Detalshe de versão</Text>
 							<Spacer />
 							<Button colorScheme={"gray"}><AiFillDelete fill="gray" /></Button>
 						</HStack>

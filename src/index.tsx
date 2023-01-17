@@ -8,6 +8,7 @@ import 'antd/dist/antd.min.css'
 import "antd/dist/antd.css"
 import { RecoilRoot } from "recoil"
 
+
 ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />

@@ -1,6 +1,7 @@
 import {
+	Badge,
 	Button, Center, Editable, EditableInput, EditablePreview, FormControl, FormLabel, HStack, Image, Input, Modal, ModalBody,
-	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, Table, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, toast, Tr, useDisclosure, useToast, VStack
+	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, toast, Tr, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
@@ -11,6 +12,19 @@ import DoubleRigth from "../../images/double-rigth-arrow.png";
 import { useNavigate } from "react-router-dom";
 import { criarVersao, getFilesName, getVersoes } from "../../api/api";
 import { Versao } from "./type";
+import { Table, Tag } from "antd";
+import { ColumnsType } from "antd/lib/table";
+
+export type DataType = {
+	id: number;
+	versao: string;
+	codigo: string;
+	data_lancamento: string;
+	nome_arquivo: string;
+	descricao: string;
+	status: number;
+	atualizado_em: string;
+}
 export const Versoes = () => {
 
 	const navigate = useNavigate();
@@ -45,6 +59,39 @@ export const Versoes = () => {
 			setTotalItens(result?.data?.total)
 		})
 	}, [currentPosition, limite])
+
+
+	const columns:ColumnsType<Versao> = [
+		{
+		  title: 'Versão',
+		  dataIndex: 'versao',
+		  key: 'versao'
+		},
+		{
+		  title: 'Código',
+		  dataIndex: 'codigo',
+		  key: 'codigo',
+		},
+		{
+		  title: 'Lançamento',
+		  dataIndex: 'data_lancamento',
+		  key: 'data_lancamento',
+		},
+		{
+		  title: 'Arquivo',
+		  dataIndex: 'nome_arquivo',
+		  key: 'nome_arquivo',
+		},
+		{
+		  title: 'Status',
+		  dataIndex: 'status',
+		  key: 'status',
+		  render: (text:string) => {
+		  	return    <Tag color="green">Success</Tag>
+		},
+		}
+	  ];
+	  
 
 	const data = [
 		{
@@ -149,11 +196,10 @@ export const Versoes = () => {
 	}
 	return (
 		<>
-			<VStack w={"80%"}>
-				<HStack spacing={5} w="full" >
-
+			<VStack w={"full"}>
+				<HStack  w="full" >
 				</HStack>
-				<VStack bgColor={"white"} borderRadius={5} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack bgColor={"white"} borderRadius={5} w={"full"} >
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Produção</Text>
 
@@ -164,37 +210,7 @@ export const Versoes = () => {
 							<Button onClick={onOpen} colorScheme={"blue"}>Criar nova versão</Button>
 						</HStack>
 					</VStack>
-					<TableContainer fontSize={"lg"} w={"full"}>
-						<Table variant='simple'>
-							{/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-							<Thead>
-								<Tr>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Versão</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Código</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Lançamento</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Ação</Text></Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								{versoes?.map((version) => {
-									return (
-										<Tr className="itemLog" cursor={"pointer"}>
-											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{version?.versao}</Text></Td>
-
-											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{version?.codigo}</Text></Td>
-											<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>{moment(version?.data_lancamento).format("l")}</Text></Td>
-											<Td><Button colorScheme={"blue"} onClick={() => { navigate((version?.id).toString()) }} variant={"link"}>Detalhe</Button></Td>
-										</Tr>
-									);
-								})}
-
-
-							</Tbody>
-							<Tfoot>
-
-							</Tfoot>
-						</Table>
-					</TableContainer>
+					<Table size="large" pagination={false} style={{width: "100%"}} dataSource={versoes} columns={columns} />;
 					<VStack py={5} w={"full"}>
 						<HStack>
 							{currentPosition >= 1}

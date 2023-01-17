@@ -8,25 +8,27 @@ import { ListagemEventosClientePage } from "../pages/ListagemEventosClientePage"
 import { ListagemEventosColaboradorPage } from "../pages/ListagemEventosColaboradorPage";
 import { TestePage } from "../pages/TestePage";
 import { TesteLayout } from "../pages/TestLayout";
+import { LayoutPadrao } from "../pages/LayoutDefault";
 import { ParametrosPage } from "../pages/ParametrosPage";
 import { DetalheVersaoPage } from "../pages/DetalheVersaoPage";
 import { DetalheErroLogPage } from "../pages/DetalheErroLogPage";
 import { ControleProcessoContratoPage } from "../pages/ControleProcessoContratoPage";
 import { ControleProcessoContratoDetalhesPage } from "../pages/ControleProcessoContratoDetalhesPage";
 import { GerenciamentoAtualizacaoClientePage } from "../pages/GerenciamentoAtualizacaoClientePage";
+import { TesteComponente } from "../pages/TesteComponente";
 
 export const RouteComponent = () => {
   return (
     <Routes>
       <Route index element={<Login />} />
-      <Route path="teste" element={<TestePage />} />
+      <Route path="teste" element={<TesteComponente />} />
       <Route path="home" element={<Home />} />
 
       <Route path="eventos/" element={<LayoutCliente />}>
         <Route index element={<ListagemEventosClientePage />} />
         <Route path={":id"} element={<DetalheEventoPage />} />
       </Route>
-      <Route path="painel" element={<TesteLayout />}>
+      <Route path="painel" element={<LayoutPadrao />}>
         <Route path="colaborador">
 
           <Route path="home" >
