@@ -14,6 +14,8 @@ import { criarVersao, getFilesName, getVersoes } from "../../api/api";
 import { Versao } from "./type";
 import { Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { stringToDate } from "../../util/util";
+
 
 export type DataType = {
 	id: number;
@@ -33,22 +35,31 @@ export const Versoes = () => {
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [fileNames, setFileNames] = useState<string[]>();
+	//const [statusExecList, setStatusExecList] = useState<string[]>(['Automáti']);
 	const [titulo, setTitulo] = useState('');
 	const [versao, setVersao] = useState('');
 	const [descricao, setDescricao] = useState('');
 	const [nomeArquivo, setNomeArquivo] = useState('0');
+	const [statusExecucao, setStatusExecucao] = useState('0');
 	const [codigo, setCodigo] = useState('');
-	const [confirmacao, setConfirmacao] = useState('');
 	const [todosCamposPreenchidos, setTodosCamposPreenchidos] = useState(false)
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
 	const [versoes, setVersoes] = useState<Versao[]>();
+	const [tempoMedioAtualizacao, setTempoMedioAtualizacao] = useState(0);
 
 	const [limite, setLimite] = useState(5);
 	const [currentPosition, setPosition] = useState<number>(1);
 	const [totalItens, setTotalItens] = useState(0);
 
 	const toast = useToast();
+
+
+	const abrirLink = (data: DataType) => {
+		const obj = data;
+		console.log(obj)
+		navigate((obj?.id).toString())
+	}
 
 	useEffect(() => {
 		getFilesName().then(result => {
@@ -58,40 +69,55 @@ export const Versoes = () => {
 			setVersoes(result?.data?.versoes)
 			setTotalItens(result?.data?.total)
 		})
-	}, [currentPosition, limite])
+	}, [currentPosition, limite, loading])
 
 
-	const columns:ColumnsType<Versao> = [
+	const columns: ColumnsType<Versao> = [
 		{
-		  title: 'Versão',
-		  dataIndex: 'versao',
-		  key: 'versao'
+			title: 'Versão',
+			dataIndex: 'versao',
+			key: 'versao'
 		},
 		{
-		  title: 'Código',
-		  dataIndex: 'codigo',
-		  key: 'codigo',
+			title: 'Código',
+			dataIndex: 'codigo',
+			key: 'codigo',
 		},
 		{
-		  title: 'Lançamento',
-		  dataIndex: 'data_lancamento',
-		  key: 'data_lancamento',
+			title: 'Lançamento',
+			dataIndex: 'data_lancamento',
+			key: 'data_lancamento',
+			render: (data: string) => {
+				return stringToDate(data);
+			}
 		},
 		{
-		  title: 'Arquivo',
-		  dataIndex: 'nome_arquivo',
-		  key: 'nome_arquivo',
+			title: 'Arquivo',
+			dataIndex: 'nome_arquivo',
+			key: 'nome_arquivo',
 		},
 		{
-		  title: 'Status',
-		  dataIndex: 'status',
-		  key: 'status',
-		  render: (text:string) => {
-		  	return    <Tag color="green">Success</Tag>
+			title: 'Status',
+			dataIndex: 'status',
+			key: 'status',
+			render: (status: number) => {
+				const online = status === 1 ? true : false;;
+				return <Tag style={{ width: "70px", textAlign: "center" }} color={online ? "green" : "orange"}>{online ? "Liberado" : "Bloqueado"}</Tag>
+			},
 		},
+		{
+			title: 'Ação',
+			dataIndex: 'acao',
+			key: 'acao',
+			render: (_, record: any) => {
+				const dataType: DataType = record;
+				return <a onClick={() => {
+					abrirLink(record)
+				}}>Editar</a>
+			},
 		}
-	  ];
-	  
+	];
+
 
 	const data = [
 		{
@@ -144,29 +170,19 @@ export const Versoes = () => {
 
 	function validarCampos() {
 		setLoading(true)
-		if (!(!titulo || !versao || !nomeArquivo || !descricao || !confirmacao || !codigo)) {
-			if (confirmacao === "eu confirmo que desejo lançar essa versão") {
-				criarVersao({ codigo: codigo, descricao: descricao, nomeArquivo: nomeArquivo, titulo: titulo, versao: versao, data_lancamento: "null", id: "null" }).then((result) => {
-					setLoading(false)
-					limpar()
-				}).catch((error) => {
-					setLoading(false)
-					toast({
-						title: "Ocorreu um erro",
-						status: "error",
-						duration: 2000,
-						isClosable: true,
-					})
-				});
-			} else {
+		if (!(!versao || !nomeArquivo || !descricao || !codigo)) {
+			criarVersao({ codigo: codigo, descricao: descricao, nome_arquivo: nomeArquivo, versao: versao, data_lancamento: "null", id: "null", status_execucao: Number(statusExecucao), tempo_medio_atualizacao:Number(tempoMedioAtualizacao)}).then((result) => {
+				setLoading(false)
+				limpar()
+			}).catch((error) => {
 				setLoading(false)
 				toast({
-					title: "Por favor, confirme que deseja executar essa ação.",
-					status: "warning",
+					title: "Ocorreu um erro",
+					status: "error",
 					duration: 2000,
 					isClosable: true,
 				})
-			}
+			});
 
 		} else {
 			setLoading(false)
@@ -180,12 +196,11 @@ export const Versoes = () => {
 		}
 	}
 	function limpar() {
-		setTitulo('')
 		setVersao('')
 		setCodigo('')
 		setNomeArquivo('')
 		setDescricao('')
-		setConfirmacao('')
+		setTempoMedioAtualizacao(0)
 		onClose();
 		toast({
 			title: "Versão criada com sucesso!",
@@ -197,7 +212,7 @@ export const Versoes = () => {
 	return (
 		<>
 			<VStack w={"full"}>
-				<HStack  w="full" >
+				<HStack w="full" >
 				</HStack>
 				<VStack bgColor={"white"} borderRadius={5} w={"full"} >
 					<VStack px={5} py={8} alignItems={"start"} w="full">
@@ -210,7 +225,7 @@ export const Versoes = () => {
 							<Button onClick={onOpen} colorScheme={"blue"}>Criar nova versão</Button>
 						</HStack>
 					</VStack>
-					<Table size="large" pagination={false} style={{width: "100%"}} dataSource={versoes} columns={columns} />;
+					<Table size="large" pagination={false} style={{ width: "100%" }} dataSource={versoes} columns={columns} />;
 					<VStack py={5} w={"full"}>
 						<HStack>
 							{currentPosition >= 1}
@@ -234,11 +249,6 @@ export const Versoes = () => {
 					<ModalCloseButton />
 					<ModalBody pb={6} >
 						<VStack overflow={"auto"} maxH={300}>
-							<FormControl>
-								<FormLabel>Título</FormLabel>
-								<Input value={titulo} onChange={(e) => { setTitulo(e.target.value); }} ref={initialRef} placeholder='Algum título aqui' />
-							</FormControl>
-
 							<FormControl mt={4}>
 								<FormLabel>Versão</FormLabel>
 								<Input value={versao} onChange={(e) => { setVersao(e.target.value); }} placeholder='ex: x' />
@@ -248,11 +258,20 @@ export const Versoes = () => {
 								<FormLabel>Código</FormLabel>
 								<Input value={codigo} onChange={(e) => { setCodigo(e.target.value); }} placeholder='ex: 2' />
 							</FormControl>
-
-
+							<FormControl mt={4}>
+								<FormLabel>Tempo médio atualização em minutos</FormLabel>
+								<Input type={"number"} value={tempoMedioAtualizacao} onChange={(e) => { setTempoMedioAtualizacao(Number(e.target.value)); }} placeholder='ex: 2' />
+							</FormControl>
+							<FormControl mt={4}>
+								<FormLabel>Status de execução</FormLabel>
+								<Select  defaultValue={statusExecucao} onChange={(e) => { setStatusExecucao(e.target.value); }} fontSize={"large"} >
+									<option value={0}>{"Automático"}</option>
+									<option value={1}>{"Manual"}</option>
+								</Select>
+							</FormControl>
 							<FormControl mt={4}>
 								<FormLabel>Nome do arquivo</FormLabel>
-								<Select placeholder="Selecione um arquivo" defaultValue={nomeArquivo} onChange={(e) => { setNomeArquivo(e.target.value); }} fontSize={"large"} >
+								<Select placeholder="Selecione um arquivo" defaultValue={nomeArquivo} onChange={(e) => { setNomeArquivo(fileNames ? fileNames[Number(e.target.value)]: "erroNoNome"); }} fontSize={"large"} >
 									{fileNames?.map((fileName, index) => {
 										return (
 											<option value={index}>{fileName}</option>
@@ -269,10 +288,6 @@ export const Versoes = () => {
 								/>
 							</FormControl>
 
-							<FormControl mt={4}>
-								<FormLabel>Por favor, digite "eu confirmo que desejo lançar essa versão"</FormLabel>
-								<Input value={confirmacao} onChange={(e) => { setConfirmacao(e.target.value); }} />
-							</FormControl>
 
 
 						</VStack>

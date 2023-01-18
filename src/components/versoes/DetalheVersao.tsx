@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Spacer, Button, useDisclosure, FormControl, FormLabel, Input, Textarea, Center, EditablePreview, EditableInput, Editable } from "@chakra-ui/react";
+import { HStack, VStack, Text, Spacer, Button, useDisclosure, FormControl, FormLabel, Input, Textarea, Center, EditablePreview, EditableInput, Editable, EditableTextarea, useToast } from "@chakra-ui/react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import {
 	Modal,
@@ -23,15 +23,18 @@ import {
 import React, { useEffect, useState } from "react";
 import { ResumoVersao } from "./ResumoVersao";
 import { AiFillDelete } from "react-icons/ai";
-import { useParams } from "react-router-dom";
-import { Versao, VersaoJSON } from "./type";
-import { getSingleVersion } from "../../api/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { Versao, VersaoJSON, VersaoUpdate } from "./type";
+import { deleteSingleVersion, getSingleVersion, updateSingleVersion } from "../../api/api";
 import { AxiosError, AxiosResponse } from "axios";
 import { ConsoleErro } from "../errolog/ConsoleErro";
+import { useDetalheVersao } from "../../hooks/useDetalheVersao";
+import { stringToDate, stringToDateWithHour } from "../../util/util";
 
 export const DetalheVersao = () => {
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
+	const toast = useToast();
 
 	const [fileNames, setFileNames] = useState<string[]>();
 	const [titulo, setTitulo] = useState('');
@@ -39,57 +42,125 @@ export const DetalheVersao = () => {
 	const [descricao, setDescricao] = useState('');
 	const [nomeArquivo, setNomeArquivo] = useState('0');
 	const [codigo, setCodigo] = useState('');
+	const [status, setStatus] = useState(0);
+	const [criadoEm, setCriadoEm] = useState('');
+	const [tempoMedio, setTempoMedio] = useState(0);
+	const [statusExecucao, setStatusExecucao] = useState(0);
+	const [idVersao, setIdVersao] = useState('');
 	const [confirmacao, setConfirmacao] = useState('');
-
 	const [version, setVersion] = useState<VersaoJSON>();
+
+	const [loading, setLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
+
+	const navigate = useNavigate();
 
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
 	const { id } = useParams();
-
+	const { dados, error, mutate } = useDetalheVersao((id ?? '')?.toString());
 	type Response = {
 		data: any,
 		error: any
 	}
 	useEffect(() => {
-		getSingleVersion(12).then((result) => {
 
-			if (result?.data) {
-				setVersion(result?.data[0])
+		const dadosVersao: VersaoJSON = dados?.data[0];
+		setVersao(dadosVersao?.versao)
+		setCodigo(dadosVersao?.codigo)
+		setNomeArquivo(dadosVersao?.nome_arquivo)
+		setDescricao(dadosVersao?.descricao)
+		setCriadoEm(dadosVersao?.data_criacao_registro);
+		setTempoMedio(dadosVersao?.tempo_medio_atualizacao);
+		setStatusExecucao(dadosVersao?.status_execucao);
+		setStatus(dadosVersao?.status);
+		setIdVersao(dadosVersao?.id);
+
+
+	}, [dados])
+
+	function deletarVersao(){
+		setDeleteLoading(true)
+		deleteSingleVersion(Number(id)).then((result) => {
+			setDeleteLoading(false)
+			const isError = result?.data === null;
+			if(isError){
+				toast({
+					title: "Ocorreu um erro",
+					status: "error",
+					duration: 2000,
+					isClosable: true,
+				})
+			}else{
+				toast({
+					title: "Atualizado com successo",
+					status: "success",
+					duration: 2000,
+					isClosable: true,
+				})
+				navigate('/painel/colaborador/versoes')
 			}
-		}).catch((e) => {
-			console.warn("hello")
-		});
-	}, [])
+		})
+	}
 
+	function salvarVersao(){
+		setLoading(true)
+		const versaoModel:VersaoUpdate = {
+			versao: versao,
+			descricao: descricao,
+			nome_arquivo: nomeArquivo,
+			codigo: codigo,
+			id: idVersao,
+			status: status
+		}
+		updateSingleVersion(Number(idVersao), versaoModel).then((result) => {
+			setLoading(false)
+			const isError = result?.data === null;
+			if(isError){
+				toast({
+					title: "Ocorreu um erro",
+					status: "error",
+					duration: 2000,
+					isClosable: true,
+				})
+			}else{
+				toast({
+					title: "Atualizado com successo",
+					status: "success",
+					duration: 2000,
+					isClosable: true,
+				})
+			}
+		})
+	}
 
 	const columns = [
-  {
-    title: 'Versão',
-    dataIndex: 'versao',
-    key: 'versao',
-  },
-  {
-    title: 'Código',
-    dataIndex: 'codigo',
-    key: 'codigo',
-  },
-  {
-    title: 'Lançamento',
-    dataIndex: 'data_lancamento',
-    key: 'data_lancamento',
-  },
-  {
-    title: 'Arquivo',
-    dataIndex: 'nome_arquivo',
-    key: 'nome_arquivo',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-  }
-];
+		{
+			title: 'Versão',
+			dataIndex: 'versao',
+			key: 'versao',
+		},
+		{
+			title: 'Código',
+			dataIndex: 'codigo',
+			key: 'codigo',
+		},
+		{
+			title: 'Lançamento',
+			dataIndex: 'data_lancamento',
+			key: 'data_lancamento',
+		},
+		{
+			title: 'Arquivo',
+			dataIndex: 'nome_arquivo',
+			key: 'nome_arquivo',
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			key: 'status',
+		}
+	];
 
 
 
@@ -147,12 +218,13 @@ export const DetalheVersao = () => {
 				<VStack bgColor={"white"} borderRadius={5} h={400} w={"full"}>
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<HStack w="full">
-							<Text fontWeight={"semibold"} fontSize={"lg"}>Detalshe de versão</Text>
+							<Text fontWeight={"semibold"} fontSize={"lg"}>Detalhe de versão</Text>
 							<Spacer />
-							<Button colorScheme={"gray"}><AiFillDelete fill="gray" /></Button>
+							<Button isLoading={loading} onClick={salvarVersao} colorScheme={"blue"} variant={"ghost"}>Salvar</Button>
+							<Button isLoading={deleteLoading} onClick={deletarVersao} colorScheme={"gray"}><AiFillDelete fill="gray" /></Button>
 						</HStack>
 
-						<ResumoVersao />
+						<ResumoVersao setStatus={setStatus} status={Number(status)} />
 					</VStack>
 					<TableContainer fontSize={"lg"} w={"full"}>
 						<Table variant='simple'>
@@ -162,14 +234,16 @@ export const DetalheVersao = () => {
 									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Versão</Text></Th>
 									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Código</Text></Th>
 									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Nome do arquivo</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Total erros</Text></Th>
+									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Criado em</Text></Th>
+									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Tempo médio</Text></Th>
+									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Status exc.</Text></Th>
 								</Tr>
 							</Thead>
 							<Tbody>
 								<Tr className="itemLog" cursor={"pointer"}>
 									<Td>
 										<Center >
-											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.versao} value={version?.versao} onChange={(e) => { setVersao(e) }} onBlur={() => { console.log("saiu do foco") }}>
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={versao} onChange={(e) => { setVersao(e) }} onBlur={() => { console.log("saiu do foco") }}>
 												<EditablePreview />
 												<EditableInput />
 											</Editable>
@@ -177,7 +251,7 @@ export const DetalheVersao = () => {
 									</Td>
 									<Td>
 										<Center >
-											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.codigo} value={version?.codigo} onChange={(e) => { setCodigo(e) }} onBlur={() => { console.log("saiu do foco") }}>
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={codigo} onChange={(e) => { setCodigo(e) }} onBlur={() => { console.log("saiu do foco") }}>
 												<EditablePreview />
 												<EditableInput />
 											</Editable>
@@ -185,7 +259,16 @@ export const DetalheVersao = () => {
 									</Td>
 									<Td>
 										<Center >
-											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.nome_arquivo} value={version?.nome_arquivo} onChange={(e) => { setVersao(e) }} onBlur={() => { console.log("saiu do foco") }}>
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={nomeArquivo} onChange={(e) => { setNomeArquivo(e) }} onBlur={() => { console.log("saiu do foco") }}>
+												<EditablePreview />
+												<EditableInput />
+											</Editable>
+										</Center>
+									</Td>
+
+									<Td>
+										<Center >
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={stringToDateWithHour(criadoEm)} onChange={(e) => { setCriadoEm(e) }} onBlur={() => { console.log("saiu do foco") }}>
 												<EditablePreview />
 												<EditableInput />
 											</Editable>
@@ -193,7 +276,15 @@ export const DetalheVersao = () => {
 									</Td>
 									<Td>
 										<Center >
-											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={version?.codigo} value={version?.codigo} onChange={(e) => { setCodigo(e) }} onBlur={() => { console.log("saiu do foco") }}>
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={(tempoMedio ?? 0).toString() + ' Min'} onChange={(e) => { setTempoMedio(Number(e)) }} onBlur={() => { console.log("saiu do foco") }}>
+												<EditablePreview />
+												<EditableInput />
+											</Editable>
+										</Center>
+									</Td>
+									<Td>
+										<Center >
+											<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={(statusExecucao ?? 0) === 0 ? "Automático" : "Manual"} onChange={(e) => { setStatusExecucao(Number(e)) }} onBlur={() => { console.log("saiu do foco") }}>
 												<EditablePreview />
 												<EditableInput />
 											</Editable>
@@ -207,7 +298,11 @@ export const DetalheVersao = () => {
 						</Table>
 					</TableContainer>
 					<VStack px={10} w={"full"}>
-						<ConsoleErro stringColor="black" erro="Algum erro aqui" cor={"#F9E79F"} />
+						<Editable w={"full"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} value={descricao} onChange={(e) => { setDescricao(e) }} onBlur={() => { console.log("saiu do foco") }}>
+							<EditablePreview />
+							<EditableTextarea />
+						</Editable>
+
 					</VStack>
 				</VStack>
 			</VStack>
@@ -250,8 +345,8 @@ export const DetalheVersao = () => {
 								/>
 							</FormControl>
 
-							<FormControl mt={4}>
-								<FormLabel>Por favor, digite "eu confirmo que desejo lançar essa versão"</FormLabel>
+							<FormControl color={"black"} mt={4}>
+								<FormLabel >Por favor, digite "eu confirmo que desejo lançar essa versão"</FormLabel>
 								<Input placeholder='' />
 							</FormControl>
 

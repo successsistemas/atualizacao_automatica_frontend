@@ -64,11 +64,11 @@ export const GerenciamentoAtualizacaoCliente = () => {
 
 	return (
 		<>
-			<VStack w={"80%"}>
+			<VStack w={"full"}>
 				<HStack spacing={5} w="full" >
 
 				</HStack>
-				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} h={400} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} h={400} w={"full"}>
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Controle de atualização</Text>
 

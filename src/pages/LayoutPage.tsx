@@ -44,7 +44,7 @@ const TesteLayoutComponent = () => {
                            G. de atualizações
                         </Menu.Item>
                         <Menu.Item onClick={() => { navigate('colaborador/versoes') }} key="3" icon={<FolderOpenOutlined />}>
-                           Versões
+                           Versõesd
                         </Menu.Item>
                         {/*	<Menu.Item onClick={() => { navigate('cotacoes-fechadas') }} key="3" icon={<MailOutlined />}>
 						Cotações fechadas

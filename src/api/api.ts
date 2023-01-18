@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { Versao } from '../components/versoes/type'
+import { Versao, VersaoUpdate } from '../components/versoes/type'
 import { UsuarioData } from '../types/UsuarioData'
 import { ConfiguracaoParametroTDO, EventoPayloadTDO } from './EventoPayloadTDO'
 
@@ -209,7 +209,7 @@ export const deleteSingleVersion = async (id: number) => {
     throw err
   }
 }
-export const updateSingleVersion = async (id: number, versao: Versao) => {
+export const updateSingleVersion = async (id: number, versao: VersaoUpdate) => {
   try {
     const res = await api.put(`controle-versao/sigle-version?id=${id}`, versao)
     return res

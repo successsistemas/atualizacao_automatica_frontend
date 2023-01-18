@@ -46,8 +46,8 @@ const LayoutDefault = () => {
 						{/* <Menu.Item onClick={() => { navigate('home/' + url) }} key="1" icon={<BiHomeAlt />}>
 							Home
 						</Menu.Item> */}
-						<Menu.Item onClick={() => { navigate('cotacao/' + url) }} key="2" icon={<FolderOpenOutlined />}>
-							Home
+						<Menu.Item onClick={() => { navigate('colaborador/gerenciamento-atualizacao-clientes') }} key="2" icon={<FolderOpenOutlined />}>
+							G. de atualizações
 						</Menu.Item>
 						<Menu.Item onClick={() => { navigate('colaborador/versoes') }} key="3" icon={<FolderOpenOutlined />}>
 							Versões
@@ -83,7 +83,7 @@ const LayoutDefault = () => {
 									</Box>
 									: <></>
 								}
-								
+
 							</Box>
 						</Flex>
 					</Header>
