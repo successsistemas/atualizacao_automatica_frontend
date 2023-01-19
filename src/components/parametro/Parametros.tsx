@@ -101,11 +101,11 @@ export const Parametros = () => {
 
 	return (
 		<>
-			<VStack >
-				<HStack spacing={5} w="full" >
+			<VStack w={"full"}>
+				<HStack w="full" >
 
 				</HStack>
-				<VStack overflowY={"auto"} p={10} bgColor={"white"} borderRadius={5} h={400} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack overflowY={"auto"} p={10} bgColor={"white"} borderRadius={5} h={400} w={"full"}>
 					<VStack py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Configuração de parâmetros</Text>
 						<HStack w={"full"}>
@@ -114,7 +114,8 @@ export const Parametros = () => {
 							<Button variant={"ghost"} onClick={salvar} colorScheme={"blue"}>Salvar</Button>
 						</HStack>
 					</VStack>
-					<VStack w={"full"}>
+					<></>
+					<VStack alignItems={"start"} w={"full"}>
 						<List>
 							{!loading ?
 								<ListItem >

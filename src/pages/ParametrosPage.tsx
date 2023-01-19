@@ -5,7 +5,7 @@ import { DadosUsuariosVisualizacao } from "../context/UsuariosVisualizacaoContex
 
 export const ParametrosPage = () => {
 	return (
-		<VStack mt={10}>
+		<VStack>
 			<ParametroProvider>
 				<DadosUsuariosVisualizacao>
 					{/* <ListaEventosColaborador /> */}

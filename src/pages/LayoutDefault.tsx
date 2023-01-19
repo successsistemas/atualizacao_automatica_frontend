@@ -1,4 +1,5 @@
-import { FolderOpenOutlined, MenuOutlined } from '@ant-design/icons';
+import { FolderOpenOutlined, MenuOutlined, HomeOutlined, SettingOutlined} from '@ant-design/icons';
+import {MdCreateNewFolder, MdNewReleases, MdSettings, MdUpdate} from "react-icons/md"
 import { Box, chakra, Flex, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { Button, Divider, Layout, Menu } from "antd";
 import 'antd/dist/antd.css';
@@ -7,6 +8,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import LogoMenor from '../assets/logo-icon-48x48.png';
 import LogoMaior from '../assets/logonomesuc.f5f52e7a.png';
 import '../theme/styles.css';
+import { VscNewFolder } from 'react-icons/vsc';
 
 
 
@@ -46,11 +48,23 @@ const LayoutDefault = () => {
 						{/* <Menu.Item onClick={() => { navigate('home/' + url) }} key="1" icon={<BiHomeAlt />}>
 							Home
 						</Menu.Item> */}
-						<Menu.Item onClick={() => { navigate('colaborador/gerenciamento-atualizacao-clientes') }} key="2" icon={<FolderOpenOutlined />}>
+							<Menu.Item onClick={() => { navigate('colaborador/gerenciamento-atualizacao-clientes') }} key="0" icon={<HomeOutlined />}>
+							Home
+						</Menu.Item>
+						<Menu.Item onClick={() => { navigate('colaborador/parametros') }} key="1" icon={<SettingOutlined />}>
+							Configuração param.
+						</Menu.Item>
+						<Menu.Item onClick={() => { navigate('colaborador/versoes') }} key="2" icon={<VscNewFolder />}>
+							Versões
+						</Menu.Item>
+							<Menu.Item onClick={() => { navigate('colaborador/gerenciamento-atualizacao-clientes') }} key="3" icon={<MdUpdate />}>
 							G. de atualizações
 						</Menu.Item>
-						<Menu.Item onClick={() => { navigate('colaborador/versoes') }} key="3" icon={<FolderOpenOutlined />}>
-							Versões
+						<Menu.Item onClick={() => { navigate('colaborador/controle-processo-contrato') }} key="4" icon={<FolderOpenOutlined />}>
+							Exec. Processos
+						</Menu.Item>
+						<Menu.Item onClick={() => { navigate('colaborador/versoes') }} key="5" icon={<MdCreateNewFolder />}>
+							Cadastro caminhos
 						</Menu.Item>
 						{/*	<Menu.Item onClick={() => { navigate('cotacoes-fechadas') }} key="3" icon={<MailOutlined />}>
 						Cotações fechadas
