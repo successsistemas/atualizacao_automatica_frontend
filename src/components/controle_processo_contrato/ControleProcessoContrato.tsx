@@ -1,12 +1,23 @@
 import {
 	Button, FormControl, FormLabel, HStack, Image, Input, Modal, ModalBody,
-	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Table, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, Tr, useDisclosure, VStack
+	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, Tr, useDisclosure, VStack
 } from "@chakra-ui/react";
 import { Select } from '@chakra-ui/react'
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import type { ColumnsType } from 'antd/es/table';
+
 
 import { useNavigate } from "react-router-dom";
+import { Table } from "antd";
+
+interface DataType {
+	contrato: string,
+	razao_social: string,
+	praca: string,
+	versao_uso: string,
+	ultima_atualizacao: string,
+}
 export const ControleProcessoContrato = () => {
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
@@ -14,6 +25,37 @@ export const ControleProcessoContrato = () => {
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
 	const navigate = useNavigate();
+
+	const dados: DataType[] = [
+		{
+			contrato: "0000055",
+			razao_social: "Um nome LTDA",
+			praca: "LENOVO-4",
+			versao_uso: "4",
+			ultima_atualizacao: "12 de Jan",
+		},
+		{
+			contrato: "0000055",
+			razao_social: "Um nome LTDA",
+			praca: "LENOVO-4",
+			versao_uso: "4",
+			ultima_atualizacao: "12 de Jan",
+		},
+		{
+			contrato: "0000055",
+			razao_social: "Um nome LTDA",
+			praca: "LENOVO-4",
+			versao_uso: "4",
+			ultima_atualizacao: "12 de Jan",
+		},
+		{
+			contrato: "0000055",
+			razao_social: "Um nome LTDA",
+			praca: "LENOVO-4",
+			versao_uso: "4",
+			ultima_atualizacao: "12 de Jan",
+		},
+	]
 
 	const data = [
 		{
@@ -60,13 +102,41 @@ export const ControleProcessoContrato = () => {
 		},
 	];
 
+	const columns: ColumnsType<DataType> = [
+		{
+			title: 'Contrato',
+			dataIndex: 'contrato',
+			key: 'contrato',
+		},
+		{
+			title: 'Razão social',
+			dataIndex: 'razao_social',
+			key: 'razao_social',
+		},
+		{
+			title: 'Praça',
+			dataIndex: 'praca',
+			key: 'praca',
+		},
+		{
+			title: 'Versão em Uso',
+			dataIndex: 'versao_uso',
+			key: 'versao_uso',
+		},
+		{
+			title: 'última Atualização',
+			dataIndex: 'ultima_atualizacao',
+			key: 'ultima_atualizacao',
+		},
+	]
+
 	return (
 		<>
-			<VStack w={"80%"}>
+			<VStack w={"full"}>
 				<HStack spacing={5} w="full" >
 
 				</HStack>
-				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} h={400} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} h={400} w={"full"} >
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Controle de atualização</Text>
 
@@ -81,35 +151,7 @@ export const ControleProcessoContrato = () => {
 							<Button size={"md"} mx={10} onClick={onOpen} colorScheme={"blue"}>Buscar</Button>
 						</HStack>
 					</VStack>
-					<TableContainer fontSize={"lg"} w={"full"}>
-						<Table variant='simple'>
-							{/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-							<Thead>
-								<Tr>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Contrato</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Razão social</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Praça</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Versão em uso</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Última atualização</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Ação</Text></Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>000873</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Salgados Mineiro</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Matriz</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.4</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>02 de Ago. 2021</Text></Td>
-									<Td><Button colorScheme={"blue"} onClick={() => { navigate("e607f8e106288e9e22efe3538c19b94a") }} variant={"link"}>Detalhe</Button></Td>
-								</Tr>
-
-							</Tbody>
-							<Tfoot>
-
-							</Tfoot>
-						</Table>
-					</TableContainer>
+					<Table size="small" style={{width: "100%"}} pagination={false} columns={columns} dataSource={dados} />;
 				</VStack>
 			</VStack>
 			<Modal

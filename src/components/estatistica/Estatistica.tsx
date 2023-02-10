@@ -85,7 +85,7 @@ export const Estatistica = () => {
 	}
 
 	return (
-		<VStack w={"80%"}>
+		<VStack w={"100%"}>
 			<HStack w={"full"}  >
 				<Select fontWeight={"semibold"} color={"gray.600"} bg={"white"} onChange={(e) => { selecionarPeriodo(e.target.value) }}>
 					<option value='7'><Text fontSize={"md"} fontWeight={"semibold"}>Últimos 7 dias</Text></option>

@@ -225,7 +225,7 @@ export const Versoes = () => {
 							<Button onClick={onOpen} colorScheme={"blue"}>Criar nova versão</Button>
 						</HStack>
 					</VStack>
-					<Table size="large" pagination={false} style={{ width: "100%" }} dataSource={versoes} columns={columns} />;
+					<Table size="small" pagination={false} style={{ width: "100%" }} dataSource={versoes} columns={columns} />;
 					<VStack py={5} w={"full"}>
 						<HStack>
 							{currentPosition >= 1}

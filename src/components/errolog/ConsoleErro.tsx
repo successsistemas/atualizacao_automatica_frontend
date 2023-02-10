@@ -8,7 +8,7 @@ type ConsoleErroType = {
 export const ConsoleErro = ({ erro, cor, stringColor }: ConsoleErroType) => {
 	return (
 		<HStack borderRadius={4} w={"full"} bg={cor}>
-			<Text fontSize={"md"} fontWeight={"semibold"} m={3} color={stringColor}>
+			<Text fontSize={"md"} fontWeight={"normal"} m={3} color={stringColor}>
 				{erro}
 			</Text>
 		</HStack>

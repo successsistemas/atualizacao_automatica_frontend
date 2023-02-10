@@ -31,11 +31,11 @@ export const DetalheErroLog = () => {
 
 	return (
 		<>
-			<VStack w={"80%"}>
+			<VStack w={"full"}>
 				<HStack spacing={5} w="full" >
 
 				</HStack>
-				<VStack bgColor={"white"} borderRadius={5} h={400} w={"full"} style={{ WebkitBoxShadow: "1px 2px 8px -3px #949494", boxShadow: "1px 2px 8px -3px #949494" }}>
+				<VStack bgColor={"white"} borderRadius={5} h={400} w={"full"} 	>
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<HStack w="full" mb={10}>
 							<Text fontWeight={"semibold"} fontSize={"lg"}>{erroLog?.titulo}</Text>
@@ -43,7 +43,7 @@ export const DetalheErroLog = () => {
 							<Button colorScheme={"gray"}><AiOutlineDownload fill="gray" /></Button>
 						</HStack>
 
-						<ConsoleErro stringColor="black" cor={"#fff0f0"} erro={erroLog?.erro ?? "Nenum log registrado"} />
+						<ConsoleErro stringColor="black" cor={"#F5EEA0"} erro={erroLog?.erro ?? "Nenum log registrado"} />
 					</VStack>
 				</VStack>
 			</VStack>

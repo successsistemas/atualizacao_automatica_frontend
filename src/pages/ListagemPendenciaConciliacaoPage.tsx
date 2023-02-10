@@ -1,15 +1,14 @@
 import { VStack } from "@chakra-ui/react";
-import { ControleProcessoContrato } from "../components/controle_processo_contrato/ControleProcessoContrato";
+import { PendenciaConciliacao } from "../components/estatistica/PendenciaConciliacao";
 import { EventosProvider } from "../context/EventosContext";
 import { DadosUsuariosVisualizacao } from "../context/UsuariosVisualizacaoContext";
 
-export const ControleProcessoContratoPage = () => {
+export const ListagemPendenciaConciliacaoPage = () => {
 	return (
 		<VStack>
 			<EventosProvider>
 				<DadosUsuariosVisualizacao>
-					{/* <ListaEventosColaborador /> */}
-					<ControleProcessoContrato />
+					<PendenciaConciliacao />
 				</DadosUsuariosVisualizacao>
 			</EventosProvider>
 		</VStack>

@@ -127,8 +127,12 @@ export const getErros = async (
   end: string
 ) => {
   try {
+    //09-02-2022 09-02-2023
+    //const res = await api.get(
+     // `logs/pagination?page=${page}&limit=${limit}&end=${start}&start=${end}`
+   // )
     const res = await api.get(
-      `logs/pagination?page=${page}&limit=${limit}&end=${start}&start=${end}`
+      `logs/pagination?page=${page}&limit=${limit}&end=${'09-02-2022'}&start=${'09-02-2023'}`
     )
     return res
   } catch (err) {

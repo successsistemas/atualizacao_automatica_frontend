@@ -61,8 +61,8 @@ export const ControleProcessoContratoDetalhes = () => {
 
 	return (
 		<>
-			<VStack w={"80%"}>
-				<HStack spacing={5} w="full" >
+			<VStack w={"100%"}>
+				<HStack  w="full" >
 
 				</HStack>
 				<VStack bgColor={"white"} borderRadius={5} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>

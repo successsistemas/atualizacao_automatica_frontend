@@ -5,10 +5,9 @@ import { DadosUsuariosVisualizacao } from "../context/UsuariosVisualizacaoContex
 
 export const ListagemEventosColaboradorPage = () => {
 	return (
-		<VStack mt={10}>
+		<VStack>
 			<EventosProvider>
 				<DadosUsuariosVisualizacao>
-
 					<Estatistica />
 				</DadosUsuariosVisualizacao>
 			</EventosProvider>

@@ -1,11 +1,22 @@
 import {
 	Button, FormControl, FormLabel, HStack, Input, Modal, ModalBody,
-	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, Table, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, Tr, useDisclosure, VStack
+	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, Tr, useDisclosure, VStack
 } from "@chakra-ui/react";
 import React from "react";
 import { Badge } from '@chakra-ui/react'
-import { DatePicker, Space } from 'antd';
+import { DatePicker, Space, Table } from 'antd';
 import { useNavigate } from "react-router-dom";
+import type { ColumnsType } from 'antd/es/table';
+interface DataType {
+	contrato: string,
+	atualizacao: string,
+	maquina: string,
+	versao: string,
+	execucao: string,
+	agendamento: string,
+	atualizado: string,
+}
+
 
 const { RangePicker } = DatePicker;
 
@@ -16,6 +27,84 @@ export const GerenciamentoAtualizacaoCliente = () => {
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
 	const navigate = useNavigate();
+
+	const dados: DataType[] = [
+		{
+			contrato: "0000055",
+			atualizacao: "24 de Set. 2022",
+			maquina: "LENOVO-4",
+			versao: "4",
+			execucao: "Manual",
+			agendamento: "25 de Fev. 2045",
+			atualizado: "25 de Mar. 3032"
+		},
+		{
+			contrato: "0000055",
+			atualizacao: "24 de Set. 2022",
+			maquina: "LENOVO-4",
+			versao: "4",
+			execucao: "Manual",
+			agendamento: "25 de Fev. 2045",
+			atualizado: "25 de Mar. 3032"
+		},
+		{
+			contrato: "0000055",
+			atualizacao: "24 de Set. 2022",
+			maquina: "LENOVO-4",
+			versao: "4",
+			execucao: "Manual",
+			agendamento: "25 de Fev. 2045",
+			atualizado: "25 de Mar. 3032"
+		},
+		{
+			contrato: "0000055",
+			atualizacao: "24 de Set. 2022",
+			maquina: "LENOVO-4",
+			versao: "4",
+			execucao: "Manual",
+			agendamento: "25 de Fev. 2045",
+			atualizado: "25 de Mar. 3032"
+		},
+			
+	]
+
+	const columns: ColumnsType<DataType> = [
+		{
+			title: 'Contrato',
+			dataIndex: 'contrato',
+			key: 'contrato',
+		},
+		{
+			title: 'Atualização',
+			dataIndex: 'atualizacao',
+			key: 'atualizacao',
+		},
+		{
+			title: 'Máquina',
+			dataIndex: 'maquina',
+			key: 'maquina',
+		},
+		{
+			title: 'Versão',
+			dataIndex: 'versao',
+			key: 'versao',
+		},
+		{
+			title: 'Execução',
+			dataIndex: 'execucao',
+			key: 'execucao',
+		},
+		{
+			title: 'Agendamento',
+			dataIndex: 'agendamento',
+			key: 'agendamento',
+		},
+		{
+			title: 'Atualizado',
+			dataIndex: 'atualizado',
+			key: 'atualizado',
+		},
+	]
 
 	const data = [
 		{
@@ -88,50 +177,7 @@ export const GerenciamentoAtualizacaoCliente = () => {
 							<Button size={"md"} mx={10} onClick={onOpen} colorScheme={"blue"}>Buscar</Button>
 						</HStack>
 					</VStack>
-					<TableContainer fontSize={"lg"} w={"full"}>
-						<Table variant='simple'>
-							{/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-							<Thead>
-								<Tr>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Contrato</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Atualização</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Máquina</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Versão</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Execução</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Agendamento</Text></Th>
-									<Th><Text fontSize={"md"} fontWeight={"semibold"}>Atualizado</Text></Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>000873</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>13 Jan. 2024</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>LENOVO-96</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.4</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Manual</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Amanhã</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}> <Badge colorScheme='green'>Sim</Badge></Text></Td>
-
-								</Tr>
-
-								<Tr className="itemLog" cursor={"pointer"}>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>000873</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>13 Jan. 2024</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>LENOVO-96</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>1.4</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Manual</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Amanhã</Text></Td>
-									<Td><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}> <Badge colorScheme='yellow'>Não</Badge></Text></Td>
-
-								</Tr>
-
-
-							</Tbody>
-							<Tfoot>
-
-							</Tfoot>
-						</Table>
-					</TableContainer>
+					<Table size="small" style={{width: "100%"}} pagination={false} columns={columns} dataSource={dados} />;
 				</VStack>
 			</VStack>
 			<Modal

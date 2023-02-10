@@ -48,7 +48,7 @@ const LayoutDefault = () => {
 						{/* <Menu.Item onClick={() => { navigate('home/' + url) }} key="1" icon={<BiHomeAlt />}>
 							Home
 						</Menu.Item> */}
-							<Menu.Item onClick={() => { navigate('colaborador/gerenciamento-atualizacao-clientes') }} key="0" icon={<HomeOutlined />}>
+							<Menu.Item onClick={() => { navigate('colaborador/principal') }} key="0" icon={<HomeOutlined />}>
 							Home
 						</Menu.Item>
 						<Menu.Item onClick={() => { navigate('colaborador/parametros') }} key="1" icon={<SettingOutlined />}>

@@ -105,7 +105,7 @@ export const Parametros = () => {
 				<HStack w="full" >
 
 				</HStack>
-				<VStack overflowY={"auto"} p={10} bgColor={"white"} borderRadius={5} h={400} w={"full"}>
+				<VStack overflowY={"auto"} p={2} bgColor={"white"} borderRadius={5} minH={400} w={"full"}>
 					<VStack py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Configuração de parâmetros</Text>
 						<HStack w={"full"}>
@@ -124,6 +124,28 @@ export const Parametros = () => {
 										<VStack color={"gray.300"}><AiFillSetting size={"24px"} /></VStack>
 										<Text fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"}>
 											Tempo para eliminação de registros de Log em dias
+										</Text>
+										<Spacer />
+										<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={dias ? dias.toString() : (0).toString()} value={dias ? dias.toString() : (0).toString()} onChange={(e) => { setDias(Number(e)) }} onBlur={() => { console.log("saiu do foco") }}>
+											<EditablePreview />
+											<EditableInput />
+										</Editable>
+									</HStack>
+									<HStack spacing={4} py={4} px={2} className="listSetting" cursor={"pointer"} onClick={() => { }}>
+										<VStack color={"gray.300"}><AiFillSetting size={"24px"} /></VStack>
+										<Text fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"}>
+										Tempo para eliminação de Pendências de Conciliação
+										</Text>
+										<Spacer />
+										<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={dias ? dias.toString() : (0).toString()} value={dias ? dias.toString() : (0).toString()} onChange={(e) => { setDias(Number(e)) }} onBlur={() => { console.log("saiu do foco") }}>
+											<EditablePreview />
+											<EditableInput />
+										</Editable>
+									</HStack>
+									<HStack spacing={4} py={4} px={2} className="listSetting" cursor={"pointer"} onClick={() => { }}>
+										<VStack color={"gray.300"}><AiFillSetting size={"24px"} /></VStack>
+										<Text fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"}>
+										Tempo para eliminar Rejeições Fiscais
 										</Text>
 										<Spacer />
 										<Editable w={"100px"} fontSize={"lg"} color={"gray.600"} fontWeight={"semibold"} defaultValue={dias ? dias.toString() : (0).toString()} value={dias ? dias.toString() : (0).toString()} onChange={(e) => { setDias(Number(e)) }} onBlur={() => { console.log("saiu do foco") }}>
