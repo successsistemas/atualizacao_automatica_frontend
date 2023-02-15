@@ -14,10 +14,77 @@ import { SimpleGrid } from '@chakra-ui/react'
 import { CardHome } from "./CardHome";
 import "../../theme/styles.css"
 
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 import type { ColumnsType } from 'antd/es/table';
+
+const data = [
+	{
+		name: "Sistema em Uso",
+		uv: 4000,
+		pv: 12,
+		amt: 2400
+	},
+	{
+		name: "Aguardando Atualização",
+		uv: 3000,
+		pv: 83,
+		amt: 2210
+	},
+	{
+		name: "Sistema com Erro de Logs",
+		uv: 2000,
+		pv: 45,
+		amt: 2290
+	},
+	{
+		name: "Sistema com Conciliação pendente",
+		uv: 2780,
+		pv: 23,
+		amt: 2000
+	},
+	{
+		name: "Sistema com Rejeições Fiscais",
+		uv: 1890,
+		pv: 12,
+		amt: 2181
+	}
+];
+
+const getIntroOfPage = (label: any) => {
+	if (label === "Page A") {
+		return "Page A is about men's clothing";
+	}
+	if (label === "Page B") {
+		return "Page B is about women's dress";
+	}
+	if (label === "Page C") {
+		return "Page C is about women's bag";
+	}
+	if (label === "Page D") {
+		return "Page D is about household goods";
+	}
+	if (label === "Page E") {
+		return "Page E is about food";
+	}
+	if (label === "Page F") {
+		return "Page F is about baby food";
+	}
+	return "";
+};
+const CustomTooltip = ({ active, payload, label }: any) => {
+	if (active && payload && payload.length) {
+		return (
+			<div className="custom-tooltip">
+				<p className="label">{`${label} : ${payload[0].value}`}</p>
+				<p className="intro">{getIntroOfPage(label)}</p>
+			</div>
+		);
+	}
+
+	return null;
+};
 
 interface DataType {
 	id: string;
@@ -126,7 +193,7 @@ export const PrincipalPage = () => {
 			dataIndex: 'erros_log',
 			key: 'erros_log',
 			render: (text: string) => <Tag color={"red"} key={2}>
-				<a onClick={()=> {
+				<a onClick={() => {
 					navigate('/painel/colaborador/erro-logs')
 				}}>{text}</a>
 			</Tag>,
@@ -136,7 +203,7 @@ export const PrincipalPage = () => {
 			dataIndex: 'rejeicoes_fiscais',
 			key: 'rejeicoes_fiscais',
 			render: (text: string) => <Tag color={"orange"} key={2}>
-				<a onClick={()=> {
+				<a onClick={() => {
 					navigate('/painel/colaborador/rejeicoes-fiscais')
 				}}>{text}</a>
 			</Tag>,
@@ -146,7 +213,7 @@ export const PrincipalPage = () => {
 			dataIndex: 'pendencia_conciliacao',
 			key: 'pendencia_conciliacao',
 			render: (text: string) => <Tag color={"pink"} key={2}>
-			<a onClick={()=> {
+				<a onClick={() => {
 					navigate('/painel/colaborador/pendencia-conciliacao	')
 				}}>{text}</a>
 			</Tag>,
@@ -159,50 +226,7 @@ export const PrincipalPage = () => {
 	const finalRef = React.useRef(null)
 	const navigate = useNavigate();
 
-	const data = [
-		{
-			name: 'Page A',
-			uv: 4000,
-			pv: 10,
-			amt: 2400,
-		},
-		{
-			name: 'Page B',
-			uv: 3000,
-			pv: 30,
-			amt: 2210,
-		},
-		{
-			name: 'Page C',
-			uv: 2000,
-			pv: 10,
-			amt: 2290,
-		},
-		{
-			name: 'Page D',
-			uv: 2780,
-			pv: 50,
-			amt: 2000,
-		},
-		{
-			name: 'Page E',
-			uv: 1890,
-			pv: 97,
-			amt: 2181,
-		},
-		{
-			name: 'Page F',
-			uv: 2390,
-			pv: 87,
-			amt: 2500,
-		},
-		{
-			name: 'Page G',
-			uv: 3490,
-			pv: 99,
-			amt: 2100,
-		},
-	];
+
 
 	return (
 		<>
@@ -210,15 +234,7 @@ export const PrincipalPage = () => {
 				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} minH={400} w={"full"}>
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<Text fontWeight={"semibold"} fontSize={"lg"}>Principal</Text>
-						<VStack w={"full"} pl={5} pr={5}>
-						<SimpleGrid w={"full"} columns={5} spacing={2}>
-							<CardHome titulo="Em uso" valor={10} />
-							<CardHome titulo="Aguardando atualização" valor={2} />
-							<CardHome titulo="Erro de log" valor={10} />
-							<CardHome titulo="Conciliação pendente" valor={10} />
-							<CardHome titulo="Rejeições fiscais" valor={10} />
-						</SimpleGrid>
-					</VStack>
+
 						<HStack w={"full"} pt={5}>
 							<Select value={1} size={"md"} fontSize={"md"} color={"gray.600"} fontWeight={"semibold"} w={"200px"}>
 								<option value='option1'><Text fontSize={"md"} color={"gray.600"} fontWeight={"semibold"}>Contrato</Text></option>
@@ -232,10 +248,17 @@ export const PrincipalPage = () => {
 
 							</Select>
 							<RangePicker style={{ height: "40px", borderRadius: "5px" }} />
-							<Button size={"md"} mx={10} onClick={onOpenFilter} colorScheme={"blue"}><FilterOutlined/></Button>
+							<Button size={"md"} mx={10} onClick={onOpenFilter} colorScheme={"blue"}><FilterOutlined /></Button>
 						</HStack>
 					</VStack>
-				
+					<VStack w={"full"}>
+
+						<SimpleGrid columns={5} spacing={4} w="full" p={4}>
+						<CardHome color="green" titulo={"Sistema em uso"} valor={0}/>
+						<CardHome color="blue" titulo={"Sistema em uso"} valor={0}/>
+						<CardHome color="green" titulo={"Sistema em uso"} valor={0}/>
+						</SimpleGrid>
+					</VStack>
 					<Table size="small" pagination={false} style={{ width: "100%" }} columns={columns} dataSource={dados} />;
 				</VStack>
 			</VStack>
@@ -304,8 +327,8 @@ export const PrincipalPage = () => {
 			>
 				<ModalOverlay />
 				<ModalContent>
-					
-			
+
+
 					<ModalBody pb={6}>
 						<FormControl>
 							<FormLabel>First name</FormLabel>

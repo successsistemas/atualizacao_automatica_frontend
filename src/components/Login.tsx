@@ -41,15 +41,27 @@ export const Login = () => {
 		api.post("login", { email: usuario, password: senha }).then((result: AxiosResponse<any, any>) => {
 			console.log(result?.request?.status)
 			console.log(result?.data?.acess_token)
-			localStorage.setItem('@App:token', result?.data?.acess_token);
-			navigate('painel/colaborador/home')
-			setLoading(false)
-			toast({
-				title: "Efetuando login",
-				status: "success",
-				duration: 2000,
-				isClosable: true,
-			})
+			if (result?.data?.isAdm) {
+				localStorage.setItem('@App:token_adm', result?.data?.acess_token);
+				navigate('configuracao-conexao')
+				setLoading(false)
+				toast({
+					title: "Efetuando login adm",
+					status: "success",
+					duration: 2000,
+					isClosable: true,
+				})
+			} else {
+				localStorage.setItem('@App:token', result?.data?.acess_token);
+				navigate('painel/colaborador/home')
+				setLoading(false)
+				toast({
+					title: "Efetuando login",
+					status: "success",
+					duration: 2000,
+					isClosable: true,
+				})
+			}
 		}).catch(error => {
 			setLoading(false)
 			toast({
@@ -94,25 +106,19 @@ export const Login = () => {
 
 	return (
 		<>
-			<VStack h={"100vh"} w={"full"} bg={"white"} px={20} py={10} >
-				<Center bg="white" w="80%" h={"100vh"} borderRadius={5} style={{ WebkitBoxShadow: "0px 0px 24px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
-					<SimpleGrid columns={2} spacing={2}>
-						<Image p={10} h="570px" borderLeftRadius={5} objectFit={"contain"} src={Communication} />
-						<VStack mt={10}>
-							<SimpleGrid columns={1} spacing={7} alignItems={"start"} w="300px">
-								<Image src={"https://static.wixstatic.com/media/02d127_75b52b04b39949d2861075fa738f850c.png/v1/fill/w_159,h_49,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/02d127_75b52b04b39949d2861075fa738f850c.png"} />
-								<Text fontWeight={"semibold"} color={"gray.400"} fontSize={"lg"}>Login</Text>
-								<Input type={'text'} onChange={(e: any) => { setUsuario(e.target.value) }} size={"lg"} variant={"filled"} placeholder={"Usuário"} />
-								<Input type={'password'} onChange={(e: any) => { setSenha(e.target.value) }} size={"lg"} variant={"filled"} placeholder={"senha"} />
-								<Button isLoading={loading} disabled={usuario === "" || senha === "" ? true : false} onClick={LoginUser} w={'100%'} _focus={{}} size={"lg"} leftIcon={<BiLogInCircle />} colorScheme={"blue"}>Entrar</Button>
-								<HStack>
-									<Text fontSize={"lg"}>Problema ao efetuar login?</Text>
-									<Button onClick={() => { teste() }} fontSize={"lg"} variant={"link"}>Ajuda</Button>
-								</HStack>
-							</SimpleGrid>
-
-						</VStack>
-					</SimpleGrid>
+			<VStack h={"100vh"} bg={"white"} px={20} py={10} >
+				<Center bg="white" h={"100vh"} borderRadius={5} >
+					<VStack px={4}>
+						<Image src={"https://static.wixstatic.com/media/02d127_75b52b04b39949d2861075fa738f850c.png/v1/fill/w_159,h_49,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/02d127_75b52b04b39949d2861075fa738f850c.png"} />
+						<Text fontWeight={"semibold"} color={"gray.400"} fontSize={"lg"}>Login</Text>
+						<Input type={'text'} onChange={(e: any) => { setUsuario(e.target.value) }} size={"lg"} variant={"filled"} placeholder={"Usuário"} />
+						<Input type={'password'} onChange={(e: any) => { setSenha(e.target.value) }} size={"lg"} variant={"filled"} placeholder={"senha"} />
+						<Button isLoading={loading} disabled={usuario === "" || senha === "" ? true : false} onClick={LoginUser} w={'100%'} _focus={{}} size={"lg"} leftIcon={<BiLogInCircle />} colorScheme={"blue"}>Entrar</Button>
+						<HStack>
+							<Text fontSize={"lg"}>Problema ao efetuar login?</Text>
+							<Button onClick={() => { teste() }} fontSize={"lg"} variant={"link"}>Ajuda</Button>
+						</HStack>
+					</VStack>
 				</Center>
 			</VStack>
 		</>

@@ -104,6 +104,7 @@ export const Estatistica = () => {
 					<ConfigProvider locale={ptBR}>
 						<DatePicker format={"DD-MM-YYYY"} defaultValue={moment(new Date(), 'DD-MM-YYYY')} onChange={(e) => { setDataFinal(e); }} placeholder="Data final" size="large" style={{ width: '100%', borderRadius: 4, fontWeight: 600, color: "gray" }} />
 					</ConfigProvider>
+				
 				</VStack>
 			</HStack>
 			<HStack spacing={5} w="full" >

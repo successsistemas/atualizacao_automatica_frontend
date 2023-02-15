@@ -40,3 +40,9 @@ export type PlanejamentoAtividadesDados = {
     value: string;
     pdeId: string;
 }
+export type ConfiguracaoTDO = {
+        host: string,
+        port: string,
+        senha: string,
+        usuario: string
+}

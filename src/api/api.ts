@@ -222,3 +222,13 @@ export const updateSingleVersion = async (id: number, versao: VersaoUpdate) => {
     throw err
   }
 }
+
+export const getConfiguracaoBancoDados = async () => {
+  try {
+    const res = await api.get(`configuracao-db`)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}

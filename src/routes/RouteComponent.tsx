@@ -21,12 +21,14 @@ import { ListagemErroLogPage } from "../pages/ListagemErrosLogPage";
 import { ListagemPendenciaConciliacaoPage } from "../pages/ListagemPendenciaConciliacaoPage";
 import { PendenciaConciliacao } from "../components/estatistica/PendenciaConciliacao";
 import { LIstaRejeicoesFiscaisPage } from "../pages/LIstaRejeicoesFiscaisPage";
+import { ConfiguracaoConexao } from "../components/ConfiguracaoConexao";
 
 export const RouteComponent = () => {
   return (
     <Routes>
       <Route index element={<Login />} />
       <Route path="teste" element={<TesteComponente />} />
+      <Route path="configuracao-conexao" element={<ConfiguracaoConexao/>}/>
       <Route path="home" element={<Home />} />
 
       <Route path="eventos/" element={<LayoutCliente />}>
