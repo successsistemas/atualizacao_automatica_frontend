@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { Versao, VersaoUpdate } from '../components/versoes/type'
+import { ConfiguracaoTDO } from '../types/types'
 import { UsuarioData } from '../types/UsuarioData'
 import { ConfiguracaoParametroTDO, EventoPayloadTDO } from './EventoPayloadTDO'
 
@@ -38,3 +39,13 @@ export const getConfiguracaoBancoDados = async () => {
     throw err
   }
 }
+export const salvarConfiguracaoBancoDados = async (dados: ConfiguracaoTDO) => {
+  try {
+    const res = await apiDb.post(`configuracao-db`, dados)
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+

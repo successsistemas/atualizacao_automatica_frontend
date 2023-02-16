@@ -44,5 +44,6 @@ export type ConfiguracaoTDO = {
         host: string,
         port: string,
         senha: string,
-        usuario: string
+        usuario: string | null
+        banco: string
 }
