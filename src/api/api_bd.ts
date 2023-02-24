@@ -4,7 +4,8 @@ import { ConfiguracaoTDO } from '../types/types'
 import { UsuarioData } from '../types/UsuarioData'
 import { ConfiguracaoParametroTDO, EventoPayloadTDO } from './EventoPayloadTDO'
 
-export const apiEndPoint = 'http://localhost:3001'
+//export const apiEndPoint = 'http://localhost:3060'
+export const apiEndPoint = 'https://apiatualizacaoteste.successsistemas.com'
 
 // export const apiEndPoint = 'http://localhost:3051';
 //export const apiEndPoint = 'http://localhost:3050';

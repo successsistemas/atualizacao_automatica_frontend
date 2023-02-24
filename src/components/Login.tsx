@@ -23,7 +23,7 @@ export const Login = () => {
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
-			navigate('painel/pdes')
+			navigate('painel/colaborador/home')
 		}
 	});
 
@@ -79,7 +79,7 @@ export const Login = () => {
 			.then((userCredential) => {
 				// Signed in
 				// const user = userCredential.user;
-				navigate('painel/pdes')
+				navigate('painel/colaborador/home')
 				setLoading(false)
 				toast({
 					title: "Usuario salvo com sucesso",
