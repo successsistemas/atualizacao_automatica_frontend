@@ -233,3 +233,38 @@ export const getConfiguracaoBancoDados = async () => {
     throw err
   }
 }
+
+export const getGerenciamentoAtualizacoesClientesDados = async (
+  page: number,
+  limit: number,
+  contrato: string,
+  codigoVersao: string,
+  statusExecucao: number,
+  dataAgendamento:string,
+  dataAtualizado:string,
+  statusAtualizacao:number
+) => {
+  try {
+    const params = {
+      ...(page > 0 ? {page} : {}),
+      ...(limit > 0 ? {limit} : {}),
+      ...(contrato.length > 0 ? {contrato} : {}),
+      ...(codigoVersao.length > 0 ? {codigo_versao: codigoVersao} : {}),
+      ...(dataAgendamento.length > 0 ? {data_agendada:dataAgendamento} : {}),
+      ...(dataAtualizado.length > 0 ? {data_atualizado:dataAtualizado} : {}),
+      ...({status_execucao:statusExecucao}),
+      ...( {status_atualizacao:statusAtualizacao}),
+    }
+    const res = await api.get(
+      `gerenciamento-atualizacao-clientes/pagination`,
+      {
+        params: params
+      }
+    )
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}
+

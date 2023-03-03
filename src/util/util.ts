@@ -9,3 +9,4 @@ export function stringToDate(date: string) {
     const currentDate = moment(date).format('L');
     return currentDate;
   }
+  
