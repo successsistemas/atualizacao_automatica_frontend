@@ -4,8 +4,8 @@ import { UsuarioData } from '../types/UsuarioData'
 import { ConfiguracaoParametroTDO, EventoPayloadTDO } from './EventoPayloadTDO'
 
 //export const apiEndPoint = 'http://localhost:3001'
-//export const apiEndPoint = 'http://localhost:3060'
-export const apiEndPoint = 'https://apiatualizacaoteste.successsistemas.com'
+export const apiEndPoint = 'http://localhost:3060'
+//export const apiEndPoint = 'https://apiatualizacaoteste.successsistemas.com'
 // export const apiEndPoint = 'http://localhost:3051';
 //export const apiEndPoint = 'http://localhost:3050';
 //lembrar de alterar a porta na api
@@ -130,8 +130,8 @@ export const getErros = async (
   try {
     //09-02-2022 09-02-2023
     //const res = await api.get(
-     // `logs/pagination?page=${page}&limit=${limit}&end=${start}&start=${end}`
-   // )
+    // `logs/pagination?page=${page}&limit=${limit}&end=${start}&start=${end}`
+    // )
     const res = await api.get(
       `logs/pagination?page=${page}&limit=${limit}&end=${'09-02-2022'}&start=${'09-02-2023'}`
     )
@@ -240,20 +240,20 @@ export const getGerenciamentoAtualizacoesClientesDados = async (
   contrato: string,
   codigoVersao: string,
   statusExecucao: number,
-  dataAgendamento:string,
-  dataAtualizado:string,
-  statusAtualizacao:number
+  dataAgendamento: string,
+  dataAtualizado: string,
+  statusAtualizacao: number
 ) => {
   try {
     const params = {
-      ...(page > 0 ? {page} : {}),
-      ...(limit > 0 ? {limit} : {}),
-      ...(contrato.length > 0 ? {contrato} : {}),
-      ...(codigoVersao.length > 0 ? {codigo_versao: codigoVersao} : {}),
-      ...(dataAgendamento.length > 0 ? {data_agendada:dataAgendamento} : {}),
-      ...(dataAtualizado.length > 0 ? {data_atualizado:dataAtualizado} : {}),
-      ...({status_execucao:statusExecucao}),
-      ...( {status_atualizacao:statusAtualizacao}),
+      ...(page > 0 ? { page } : {}),
+      ...(limit > 0 ? { limit } : {}),
+      ...(contrato.length > 0 ? { contrato } : {}),
+      ...(codigoVersao.length > 0 ? { codigo_versao: codigoVersao } : {}),
+      ...(dataAgendamento.length > 0 ? { data_agendada: dataAgendamento } : {}),
+      ...(dataAtualizado.length > 0 ? { data_atualizado: dataAtualizado } : {}),
+      ...({ status_execucao: statusExecucao }),
+      ...({ status_atualizacao: statusAtualizacao }),
     }
     const res = await api.get(
       `gerenciamento-atualizacao-clientes/pagination`,
@@ -267,4 +267,24 @@ export const getGerenciamentoAtualizacoesClientesDados = async (
     throw err
   }
 }
-
+export const getControleProcessoContrato = async (
+  page: number,
+  limit: number,
+) => {
+  try {
+    const params = {
+      ...(page > 0 ? { page } : {}),
+      ...(limit > 0 ? { limit } : {}),
+    }
+    const res = await api.get(
+      `controle-processoscontrato/pagination`,
+      {
+        params: params
+      }
+    )
+    return res
+  } catch (err) {
+    if ((err as any).response) return { data: null, error: err }
+    throw err
+  }
+}

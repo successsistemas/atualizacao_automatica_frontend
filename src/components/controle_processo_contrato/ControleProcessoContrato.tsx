@@ -3,104 +3,55 @@ import {
 	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, TableContainer, Tbody, Td, Text, Textarea, Tfoot, Th, Thead, Tr, useDisclosure, VStack
 } from "@chakra-ui/react";
 import { Select } from '@chakra-ui/react'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import type { ColumnsType } from 'antd/es/table';
-
+import DoubleLeft from "../../images/double-left-arrow.png";
+import DoubleRigth from "../../images/double-rigth-arrow.png";
 
 import { useNavigate } from "react-router-dom";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
+import { getControleProcessoContrato } from "../../api/api";
 
 interface DataType {
 	contrato: string,
 	razao_social: string,
-	praca: string,
-	versao_uso: string,
-	ultima_atualizacao: string,
+	cidade: string,
+	id_controle_processos: string,
+	baixar: string,
+	enviar_erro_log: string,
+	enviar_conciliacao: string,
+	enviar_rejeicao_fiscal: string,
+	receber_msgs: string,
+	enviar_boletos: string,
+	status: string,
+	cobranca: string,
+	tipo_atualizacao: string
 }
 export const ControleProcessoContrato = () => {
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
-
+	const [controleAtualizacao, setControleAtualizacao] = useState<DataType[]>([]);
 	const initialRef = React.useRef(null)
 	const finalRef = React.useRef(null)
 	const navigate = useNavigate();
+	const [totalItens, setTotalItens] = useState(0);
+	const [currentPosition, setPosition] = useState<number>(1);
+	const [limite, setLimite] = useState(6);
 
-	const dados: DataType[] = [
-		{
-			contrato: "0000055",
-			razao_social: "Um nome LTDA",
-			praca: "LENOVO-4",
-			versao_uso: "4",
-			ultima_atualizacao: "12 de Jan",
-		},
-		{
-			contrato: "0000055",
-			razao_social: "Um nome LTDA",
-			praca: "LENOVO-4",
-			versao_uso: "4",
-			ultima_atualizacao: "12 de Jan",
-		},
-		{
-			contrato: "0000055",
-			razao_social: "Um nome LTDA",
-			praca: "LENOVO-4",
-			versao_uso: "4",
-			ultima_atualizacao: "12 de Jan",
-		},
-		{
-			contrato: "0000055",
-			razao_social: "Um nome LTDA",
-			praca: "LENOVO-4",
-			versao_uso: "4",
-			ultima_atualizacao: "12 de Jan",
-		},
-	]
+	useEffect(() => {
+		getControleProcessoContrato(currentPosition, limite).then((result) => {
+			setTotalItens(result?.data?.total)
+			setControleAtualizacao(result?.data?.lista)
+		})
+	}, [currentPosition, limite])
 
-	const data = [
-		{
-			name: 'Page A',
-			uv: 4000,
-			pv: 10,
-			amt: 2400,
-		},
-		{
-			name: 'Page B',
-			uv: 3000,
-			pv: 30,
-			amt: 2210,
-		},
-		{
-			name: 'Page C',
-			uv: 2000,
-			pv: 10,
-			amt: 2290,
-		},
-		{
-			name: 'Page D',
-			uv: 2780,
-			pv: 50,
-			amt: 2000,
-		},
-		{
-			name: 'Page E',
-			uv: 1890,
-			pv: 97,
-			amt: 2181,
-		},
-		{
-			name: 'Page F',
-			uv: 2390,
-			pv: 87,
-			amt: 2500,
-		},
-		{
-			name: 'Page G',
-			uv: 3490,
-			pv: 99,
-			amt: 2100,
-		},
-	];
+	const next = (numero: number) => {
+		setPosition(currentPosition + (numero))
+	}
+	const handleFIlter = () => {
+		setPosition(1)
+	}
 
 	const columns: ColumnsType<DataType> = [
 		{
@@ -114,21 +65,175 @@ export const ControleProcessoContrato = () => {
 			key: 'razao_social',
 		},
 		{
-			title: 'Praça',
-			dataIndex: 'praca',
-			key: 'praca',
+			title: 'Cidade',
+			dataIndex: 'cidade',
+			key: 'cidade',
 		},
 		{
-			title: 'Versão em Uso',
-			dataIndex: 'versao_uso',
-			key: 'versao_uso',
+			title: 'Baixar',
+			dataIndex: 'baixar',
+			key: 'baixar',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
 		},
 		{
-			title: 'última Atualização',
-			dataIndex: 'ultima_atualizacao',
-			key: 'ultima_atualizacao',
+			title: 'Enviar Erro Log',
+			dataIndex: 'enviar_erro_log',
+			key: 'enviar_erro_log',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Enviar Conciliação',
+			dataIndex: 'enviar_conciliacao',
+			key: 'enviar_conciliacao',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Enviar Rejeição Fiscal',
+			dataIndex: 'enviar_rejeicao_fiscal',
+			key: 'enviar_rejeicao_fiscal',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Receber Mensagem',
+			dataIndex: 'receber_msgs',
+			key: 'receber_msgs',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Enviar Boletos',
+			dataIndex: 'enviar_boletos',
+			key: 'enviar_boletos',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			key: 'status',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Cobrança',
+			dataIndex: 'cobranca',
+			key: 'cobranca',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Sim") {
+					texto = "Sim"
+					color = 'green'
+				}
+				else {
+					texto = "Não"
+					color = 'red'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
+		},
+		{
+			title: 'Tipo Atualização',
+			dataIndex: 'tipo_atualizacao',
+			key: 'tipo_atualizacao',
+			render: (text: string) => {
+				let texto = '';
+				let color = '';
+				if ((text) === "Automático") {
+					texto = "Automático"
+					color = '#57C82D'
+				}
+				else {
+					texto = "Manual"
+					color = '#F10D0D'
+				}
+				return <Tag style={{ width: "100px", textAlign: "center" }} color={color}>{texto}</Tag>
+			}
 		},
 	]
+
+
 
 	return (
 		<>
@@ -136,9 +241,9 @@ export const ControleProcessoContrato = () => {
 				<HStack spacing={5} w="full" >
 
 				</HStack>
-				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} h={400} w={"full"} >
+				<VStack overflow={"auto"} bgColor={"white"} borderRadius={5} minH={400} w={"full"} >
 					<VStack px={5} py={8} alignItems={"start"} w="full">
-						<Text fontWeight={"semibold"} fontSize={"lg"}>Controle de atualização</Text>
+						<Text fontWeight={"semibold"} fontSize={"lg"}>Controle de Processo por Contrato</Text>
 
 						<HStack w={"full"}>
 							<Select placeholder='Buscar por' size={"md"} fontSize={"md"} color={"gray.600"} fontWeight={"semibold"} w={"200px"}>
@@ -151,7 +256,29 @@ export const ControleProcessoContrato = () => {
 							<Button size={"md"} mx={10} onClick={onOpen} colorScheme={"blue"}>Buscar</Button>
 						</HStack>
 					</VStack>
-					<Table size="small" style={{width: "100%"}} pagination={false} columns={columns} dataSource={dados} />;
+					<Table
+						onRow={(record, rowIndex) => {
+							return {
+								onClick: event => {
+									navigate('76')
+								}
+							}
+						}}
+						size="small" style={
+							{
+								width: "100%",
+								overflowX: "scroll",
+								whiteSpace: 'nowrap',
+								cursor: 'pointer'
+							}} pagination={false} columns={columns} dataSource={controleAtualizacao} />;
+				</VStack>
+				<VStack my={4}>
+					<HStack>
+						{currentPosition >= 1}
+						<Button disabled={currentPosition <= 1} onClick={() => { next(-1) }}><Image boxSize={"14px"} src={DoubleLeft} /></Button>
+						<Text fontWeight={500}>{currentPosition} de {Math.ceil(totalItens / limite)}</Text>
+						<Button disabled={currentPosition >= Math.ceil(totalItens / limite)} onClick={() => { next(1) }}><Image boxSize={"14px"} src={DoubleRigth} /></Button>
+					</HStack>
 				</VStack>
 			</VStack>
 			<Modal

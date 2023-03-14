@@ -64,34 +64,37 @@ export const DetalheVersao = () => {
 		error: any
 	}
 	useEffect(() => {
-
-		const dadosVersao: VersaoJSON = dados?.data[0];
-		setVersao(dadosVersao?.versao)
-		setCodigo(dadosVersao?.codigo)
-		setNomeArquivo(dadosVersao?.nome_arquivo)
-		setDescricao(dadosVersao?.descricao)
-		setCriadoEm(dadosVersao?.data_criacao_registro);
-		setTempoMedio(dadosVersao?.tempo_medio_atualizacao);
-		setStatusExecucao(dadosVersao?.status_execucao);
-		setStatus(dadosVersao?.status);
-		setIdVersao(dadosVersao?.id);
+		try {
+			const dadosVersao: VersaoJSON = dados?.data[0];
+			setVersao(dadosVersao?.versao)
+			setCodigo(dadosVersao?.codigo)
+			setNomeArquivo(dadosVersao?.nome_arquivo)
+			setDescricao(dadosVersao?.descricao)
+			setCriadoEm(dadosVersao?.data_criacao_registro);
+			setTempoMedio(dadosVersao?.tempo_medio_atualizacao);
+			setStatusExecucao(dadosVersao?.status_execucao);
+			setStatus(dadosVersao?.status);
+			setIdVersao(dadosVersao?.id);
+		} catch (e) {
+console.log(e)
+		}
 
 
 	}, [dados])
 
-	function deletarVersao(){
+	function deletarVersao() {
 		setDeleteLoading(true)
 		deleteSingleVersion(Number(id)).then((result) => {
 			setDeleteLoading(false)
 			const isError = result?.data === null;
-			if(isError){
+			if (isError) {
 				toast({
 					title: "Ocorreu um erro",
 					status: "error",
 					duration: 2000,
 					isClosable: true,
 				})
-			}else{
+			} else {
 				toast({
 					title: "Atualizado com successo",
 					status: "success",
@@ -103,9 +106,9 @@ export const DetalheVersao = () => {
 		})
 	}
 
-	function salvarVersao(){
+	function salvarVersao() {
 		setLoading(true)
-		const versaoModel:VersaoUpdate = {
+		const versaoModel: VersaoUpdate = {
 			versao: versao,
 			descricao: descricao,
 			nome_arquivo: nomeArquivo,
@@ -116,14 +119,14 @@ export const DetalheVersao = () => {
 		updateSingleVersion(Number(idVersao), versaoModel).then((result) => {
 			setLoading(false)
 			const isError = result?.data === null;
-			if(isError){
+			if (isError) {
 				toast({
 					title: "Ocorreu um erro",
 					status: "error",
 					duration: 2000,
 					isClosable: true,
 				})
-			}else{
+			} else {
 				toast({
 					title: "Atualizado com successo",
 					status: "success",

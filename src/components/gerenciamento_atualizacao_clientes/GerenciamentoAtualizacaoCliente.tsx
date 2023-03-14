@@ -49,10 +49,6 @@ export const GerenciamentoAtualizacaoCliente = () => {
 
 	const [dados, setDados] = useState<DataType[]>([]);
 
-	const teste = () => {
-		console.warn(statusAtualizacao)
-	}
-	teste();
 
 
 	const next = (numero: number) => {
@@ -242,10 +238,10 @@ export const GerenciamentoAtualizacaoCliente = () => {
 								<FormLabel>Data Agendada </FormLabel>
 								<VStack w={"full"}>
 									<ConfigProvider locale={ptBR}>
-										<DatePicker format={"DD-MM-YYYY"} value={dataAgendada} onChange={(e) => { 
-											setDataAgendada(e); 
+										<DatePicker format={"DD-MM-YYYY"} value={dataAgendada} onChange={(e) => {
+											setDataAgendada(e);
 											handleFIlter()
-											}} placeholder="Data inicial" size="large" style={{ width: '100%', borderRadius: 4 }} />
+										}} placeholder="Data inicial" size="large" style={{ width: '100%', borderRadius: 4 }} />
 									</ConfigProvider>
 								</VStack>
 							</FormControl>
@@ -256,7 +252,7 @@ export const GerenciamentoAtualizacaoCliente = () => {
 										<DatePicker format={"DD-MM-YYYY"} value={dataAtualizado} onChange={(e) => {
 											setDataAtualizado(e);
 											handleFIlter()
-											}} placeholder="Data atualizado" size="large" style={{ width: '100%', borderRadius: 4 }} />
+										}} placeholder="Data atualizado" size="large" style={{ width: '100%', borderRadius: 4 }} />
 									</ConfigProvider>
 								</VStack>
 							</FormControl>
@@ -276,16 +272,16 @@ export const GerenciamentoAtualizacaoCliente = () => {
 						</HStack>
 					</VStack>
 					<Table size="small" style={{ width: "100%" }} pagination={false} columns={columns} dataSource={dados} />;
-					
+
 				</VStack>
 				<VStack my={4}>
-						<HStack>
-							{currentPosition >= 1}
-							<Button disabled={currentPosition <= 1} onClick={() => { next(-1) }}><Image boxSize={"14px"} src={DoubleLeft} /></Button>
-							<Text fontWeight={500}>{currentPosition} de {Math.ceil(totalItens / limite)}</Text>
-							<Button disabled={currentPosition >= Math.ceil(totalItens / limite)} onClick={() => { next(1) }}><Image boxSize={"14px"} src={DoubleRigth} /></Button>
-						</HStack>
-					</VStack>
+					<HStack>
+						{currentPosition >= 1}
+						<Button disabled={currentPosition <= 1} onClick={() => { next(-1) }}><Image boxSize={"14px"} src={DoubleLeft} /></Button>
+						<Text fontWeight={500}>{currentPosition} de {Math.ceil(totalItens / limite)}</Text>
+						<Button disabled={currentPosition >= Math.ceil(totalItens / limite)} onClick={() => { next(1) }}><Image boxSize={"14px"} src={DoubleRigth} /></Button>
+					</HStack>
+				</VStack>
 			</VStack>
 			<Modal
 				size={"lg"}

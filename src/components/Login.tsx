@@ -21,11 +21,6 @@ export const Login = () => {
 	const [senha, setSenha] = useState('')
 	const [loading, setLoading] = useState(false)
 
-	onAuthStateChanged(auth, (user) => {
-		if (user) {
-			navigate('painel/colaborador/home')
-		}
-	});
 
 	function teste() {
 		axios.get('templates/JS8PZF-BocYD/data').then(result => {

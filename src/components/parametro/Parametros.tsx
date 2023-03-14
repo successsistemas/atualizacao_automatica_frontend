@@ -13,7 +13,7 @@ export const Parametros = () => {
 	const toast = useToast();
 	const { parametro, mutate } = useContext(ParametroContext);
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const [dias, setDias] = useState<number>(parametro?.data[0]?.em_dias);
+	const [dias, setDias] = useState<number>(parametro?.data[0]?.em_dias | 0);
 	const [loading, setLoading] = useState(false);
 
 	const initialRef = React.useRef(null)

@@ -65,10 +65,10 @@ export const ControleProcessoContratoDetalhes = () => {
 				<HStack  w="full" >
 
 				</HStack>
-				<VStack bgColor={"white"} borderRadius={5} w={"full"} style={{ WebkitBoxShadow: "0px 0px 12px -5px #ADADAD", boxShadow: "0px 0px 24px -5px #ADADAD" }}>
+				<VStack bgColor={"white"} borderRadius={5} w={"full"} >
 					<VStack px={5} py={8} alignItems={"start"} w="full">
 						<HStack w="full">
-							<Text fontWeight={"semibold"} fontSize={"lg"}>Controle de processo</Text>
+							<Text fontWeight={"semibold"} fontSize={"lg"}>Detalhe Controle de processo</Text>
 						</HStack>
 
 						<CheckBoxControleProcesso />
