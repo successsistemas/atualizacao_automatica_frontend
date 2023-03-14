@@ -31,6 +31,20 @@ import { ConsoleErro } from "../errolog/ConsoleErro";
 import { useDetalheVersao } from "../../hooks/useDetalheVersao";
 import { stringToDate, stringToDateWithHour } from "../../util/util";
 
+interface DataType {
+	id: string,
+	versao: string,
+	codigo: string,
+	data_lancamento:string,
+	nome_arquivo: string,
+	descricao: string,
+	status: number,
+	atualizado_em: string,
+	data_criacao_registro: string,
+	tempo_medio_atualizacao: number,
+	status_execucao: number
+}
+
 export const DetalheVersao = () => {
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
@@ -59,6 +73,8 @@ export const DetalheVersao = () => {
 	const finalRef = React.useRef(null)
 	const { id } = useParams();
 	const { dados, error, mutate } = useDetalheVersao((id ?? '')?.toString());
+
+
 	type Response = {
 		data: any,
 		error: any
